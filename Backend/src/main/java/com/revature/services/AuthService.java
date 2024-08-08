@@ -47,4 +47,8 @@ public class AuthService {
             return outUser;
         }
     }
+
+    public void logout(HttpSession session){
+        session.invalidate();
+    }
 }

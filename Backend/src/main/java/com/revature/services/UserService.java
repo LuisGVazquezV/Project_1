@@ -16,13 +16,18 @@ public class UserService {
 
     public User registerUser(User user) {
         if (user.getRole() == null || user.getRole().isEmpty()) {
-            user.setRole("employee"); // Set default role if not provided
+            user.setRole("Employee"); // Set default role if not provided
         }
         return uDAO.save(user);
     }
 
     public List<User> getAllUsers() {
         return uDAO.findAll();
+    }
+
+
+    public User getUserById(int userId) {
+        return uDAO.findById(userId).orElse(null);
     }
 
     public void deleteUserById(int userId) {
@@ -39,4 +44,6 @@ public class UserService {
             return null;
         }
     }
+
+
 }

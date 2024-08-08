@@ -6,7 +6,6 @@ import com.revature.models.DTOs.IncomingReimbursementDTO;
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -26,7 +25,7 @@ public class ReimbursementService {
     }
 
     public Reimbursement addReimbursement(IncomingReimbursementDTO newReimbursement) {
-        Reimbursement reimbursement = new Reimbursement(0,newReimbursement.getDescription(),newReimbursement.getAmount(), "Pending", (User)null);
+        Reimbursement reimbursement = new Reimbursement(0,newReimbursement.getDescription(),newReimbursement.getAmount(), "PENDING", (User)null);
         Optional<User> u = this.uDAO.findById(newReimbursement.getUserId());
         if(u.isPresent()){
             reimbursement.setUser((User)u.get());
@@ -45,6 +44,10 @@ public class ReimbursementService {
         return this.rDAO.findByUserUserId(userId);
     }
 
+    public Optional<Reimbursement> getReimbursementById(int reimbId) {
+        return this.rDAO.findById(reimbId);
+    }
+
     public List<Reimbursement> getReimbursementsByStatus(String status) {
         return this.rDAO.findByStatus(status);
     }
@@ -61,4 +64,40 @@ public class ReimbursementService {
 
 
     }
+
+    // Service method to get reimbursements by userId and status
+    public List<Reimbursement> getReimbursementsByUserIdAndStatus(int userId, String status) {
+        return rDAO.findByUserUserIdAndStatus(userId, status);
+    }
+
+
+    public Reimbursement updateReimbursementDescription(int reimbId, String newDescription) {
+        Optional<Reimbursement> existingReimbursement = this.rDAO.findById(reimbId);
+
+        if (existingReimbursement.isPresent()) {
+            Reimbursement r = existingReimbursement.get();
+
+            // Ensure status is being checked correctly
+            if (!"PENDING".equalsIgnoreCase(r.getStatus())) {
+                return null; // Return null if it's not pending
+            }
+
+            r.setDescription(newDescription);
+            return this.rDAO.save(r);
+        } else {
+            return null;
+        }
+    }
+
+    public Reimbursement deleteReimbursementById(int reimbId) {
+        Optional<Reimbursement> existingReimbursement = this.rDAO.findById(reimbId);
+        if(existingReimbursement.isPresent()){
+            Reimbursement r = (Reimbursement)existingReimbursement.get();
+            this.rDAO.delete(r);
+            return r;
+        }else{
+            return null;
+        }
+    }
+
 }

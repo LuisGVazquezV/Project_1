@@ -26,8 +26,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'employee'")
-    private String role = "employee";
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'Employee'")
+    private String role = "Employee";
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.ALL} , orphanRemoval = true)

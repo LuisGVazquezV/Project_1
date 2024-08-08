@@ -14,8 +14,8 @@ public class Reimbursement {
 
     private double amount;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
-    private String status = "pending"; // "PENDING", "APPROVED", or "DENIED"
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    private String status = "PENDING"; // "PENDING", "APPROVED", or "DENIED"
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId") // Specifies the foreign key column name
