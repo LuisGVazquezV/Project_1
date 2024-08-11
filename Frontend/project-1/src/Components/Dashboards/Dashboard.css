@@ -1,6 +1,6 @@
 .dashboard-header {
     text-align: left;
-    margin-left: 20px; /* Adjust the value to control indentation */
+    margin-left: 20px;
     margin-bottom: 20px;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .status-pending {
-    background-color: yellow;
+    background-color: blue;
 }
 
 .status-approved {

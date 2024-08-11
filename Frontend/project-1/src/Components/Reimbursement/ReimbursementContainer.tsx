@@ -80,7 +80,7 @@ export const ReimbursementContainer: React.FC = () => {
             <div className="heading-section">
                 <h2>All Reimbursements</h2>
                 <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)} className="mb-3">
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
                         Status Filter
                     </Dropdown.Toggle>
                     <Dropdown.Menu>

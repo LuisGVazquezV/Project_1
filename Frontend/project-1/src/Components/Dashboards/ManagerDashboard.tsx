@@ -23,13 +23,13 @@ export const ManagerDashboard: React.FC = () => {
                 <h1 className="dashboard-header">Manager Dashboard</h1>
 
                 <Button
-                    variant="outline-primary"
+                    variant="outline-primary btn-lg"
                     onClick={() => setActiveTab("reimbursements")}
                 >
                     Reimbursements
                 </Button>
                 <Button
-                    variant="outline-primary"
+                    variant="outline-primary btn-lg"
                     className="ms-2"
                     onClick={() => setActiveTab("users")}
                 >

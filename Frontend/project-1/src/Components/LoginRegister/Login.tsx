@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { store } from "../../globalData/store";
-import { Button, Container, Form, Row, Col, Card } from "react-bootstrap";
+import {Button, Container, Form, Row, Col, Card, Image, CardHeader} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Login: React.FC = () => {
@@ -49,10 +49,14 @@ export const Login: React.FC = () => {
     };
 
     return (
+
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
+
             <Card className="p-4" style={{ maxWidth: '400px', width: '100%' }}>
                 <Card.Body>
-                    <Card.Title className="text-center mb-4">Login</Card.Title>
+                    <Image src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000"/>
+                    <Card.Title className="text-center mb-4 text-primary fs-1" >ERS</Card.Title>
+                    <Card.Subtitle className="text-center mb-4 text-primary fs-5">Employee Reimbursement System</Card.Subtitle>
                     <Form>
                         <Form.Group controlId="formUsername">
                             <Form.Label>Username</Form.Label>

@@ -35,6 +35,7 @@ const AppContent: React.FC = () => {
                     <Route path="/user-profile" element={<UserProfile />} />
                 </Routes>
             </BrowserRouter>
+
         </div>
     );
 };

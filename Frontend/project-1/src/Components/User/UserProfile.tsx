@@ -52,7 +52,7 @@ export const UserProfile: React.FC = () => {
                     <Col md={6}>
                         <div className="text-center mb-4">
                             <h1><strong>{user.firstName}{" "}{user.lastName}</strong></h1>
-                            <Image src="https://via.placeholder.com/200" roundedCircle className="mb-3"/>
+                            <Image src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000" width={200} height={200} roundedCircle className="mb-3"/>
 
                         </div>
                         <div className="mb-4">

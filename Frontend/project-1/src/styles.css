@@ -1,8 +1,8 @@
 /* styles.css */
 
 .dark-mode-toggle-container {
-    position: absolute;
-    top: 20px;
+    position: fixed;
+    bottom: 20px;
     right: 20px;
     z-index: 1000;
 }
@@ -53,6 +53,6 @@ input:checked + .slider:before {
 }
 
 .dark-mode {
-    background-color: #232c40; /* Dark mode background color */
+    background-color: #181e2a; /* Dark mode background color */
     color: #ffffff; /* Dark mode text color */
 }
