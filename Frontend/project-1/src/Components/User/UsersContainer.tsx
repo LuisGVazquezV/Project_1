@@ -52,7 +52,7 @@ export const UsersContainer: React.FC = () => {
     return (
         <div>
             <h2>All Users</h2>
-            <Table striped bordered hover variant="dark" className="mt-4">
+            <Table striped bordered hover variant="primary" className="mt-4">
                 <thead>
                 <tr>
                     <th>User ID</th>
@@ -71,13 +71,13 @@ export const UsersContainer: React.FC = () => {
                         <td>{user.role}</td>
                         <td>
                             <Button
-                                variant="outline-warning"
+                                variant="outline-info"
                                 onClick={() => handleUserRoleUpdate(user.userId, user.role)}
                             >
                                 {user.role === "Employee" ? "Promote to Manager" : "Demote to Employee"}
                             </Button>
                             <Button
-                                variant="outline-danger"
+                                variant="outline-warning"
                                 className="ms-2"
                                 onClick={() => handleUserDelete(user.userId)}
                             >

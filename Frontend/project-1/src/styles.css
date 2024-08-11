@@ -1,20 +1,12 @@
 /* styles.css */
 
-/* Ensure body has dark mode class */
-.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-/* Slider Container */
 .dark-mode-toggle-container {
-    position: fixed;
-    bottom: 20px;
+    position: absolute;
+    top: 20px;
     right: 20px;
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000;
 }
 
-/* Slider Switch */
 .switch {
     position: relative;
     display: inline-block;
@@ -53,18 +45,14 @@
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #32c9b4; /* Your color scheme */
 }
 
 input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* Dark mode adjustments */
-.dark-mode .slider {
-    background-color: #2196F3;
-}
-
-.dark-mode .slider:before {
-    background-color: #ffffff;
+.dark-mode {
+    background-color: #232c40; /* Dark mode background color */
+    color: #ffffff; /* Dark mode text color */
 }

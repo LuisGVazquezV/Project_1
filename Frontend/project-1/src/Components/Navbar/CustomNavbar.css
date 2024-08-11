@@ -1,35 +1,38 @@
 /* CustomNavbar.css */
+.navbar-custom {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-/* Dark mode styles */
 .navbar-dark-mode {
-    background-color: black; /* Background color for dark mode */
+    background-color: #232c40; /* Dark color */
+    color: #ffffff; /* Light text */
 }
 
-.navbar-dark-mode .navbar-brand,
-.navbar-dark-mode .nav-link {
-    color: white; /* Default color for Navbar.Brand and Nav.Link in dark mode */
-    transition: color 0.3s, text-shadow 0.3s; /* Smooth transition for color and text shadow */
-}
-
-.navbar-dark-mode .navbar-brand:hover,
-.navbar-dark-mode .nav-link:hover {
-    color: lightgray; /* Color on hover */
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Light text shadow for highlighting */
-}
-
-/* Light mode styles */
 .navbar-light-mode {
-    background-color: gray; /* Background color for light mode */
+    background-color: #8affb3; /* Light color */
+    color: #354260; /* Dark text */
 }
 
-.navbar-light-mode .navbar-brand,
+.navbar-dark-mode .nav-link {
+    color: #ffffff; /* Light text for links in dark mode */
+}
+
 .navbar-light-mode .nav-link {
-    color: black; /* Default color for Navbar.Brand and Nav.Link in light mode */
-    transition: color 0.3s, text-shadow 0.3s; /* Smooth transition for color and text shadow */
+    color: #354260; /* Dark text for links in light mode */
 }
 
-.navbar-light-mode .navbar-brand:hover,
+.navbar-dark-mode .nav-link:hover {
+    text-shadow: 1px 1px 2px #55e1b6; /* Highlight link text in dark mode */
+}
+
 .navbar-light-mode .nav-link:hover {
-    color: darkgray; /* Color on hover */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Dark text shadow for highlighting */
+    text-shadow: 1px 1px 2px #32c9b4; /* Highlight link text in light mode */
+}
+
+.navbar-dark-mode .navbar-brand {
+    color: #ffffff; /* Light text for brand in dark mode */
+}
+
+.navbar-light-mode .navbar-brand {
+    color: #354260; /* Dark text for brand in light mode */
 }

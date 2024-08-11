@@ -3,13 +3,13 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { store } from "../../globalData/store";
-import { useDarkMode } from '../../contexts/DarkmodeContext'; // Update the import path as necessary
-import './CustomNavbar.css'; // Ensure this is the correct path
+import { useDarkMode } from '../../contexts/DarkmodeContext';
+import './CustomNavbar.css'; // Ensure this path is correct
 
 const CustomNavbar: React.FC = () => {
     const navigate = useNavigate();
     const user = store.loggedInUser;
-    const { isDarkMode } = useDarkMode(); // Get dark mode state
+    const { isDarkMode } = useDarkMode();
 
     const handleLogout = async () => {
         try {

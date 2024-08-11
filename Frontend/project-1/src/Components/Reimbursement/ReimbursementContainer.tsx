@@ -92,7 +92,7 @@ export const ReimbursementContainer: React.FC = () => {
                 </Dropdown>
             </div>
 
-            <Table striped bordered hover variant="dark" className="mt-3">
+            <Table striped bordered hover variant="primary" className="mt-3">
                 <thead>
                 <tr>
                     <th>Reimbursement ID</th>
@@ -118,16 +118,16 @@ export const ReimbursementContainer: React.FC = () => {
                         <td>
                             {reimbursement.status === 'PENDING' && (
                                 <>
-                                    <Button variant="outline-info"
+                                    <Button variant="outline-success"
                                             onClick={() => handleUpdate(reimbursement.reimbId, 'APPROVED')}
                                             className="action-button">Approve</Button>
-                                    <Button variant="outline-info"
+                                    <Button variant="outline-danger"
                                             onClick={() => handleUpdate(reimbursement.reimbId, 'DENIED')}
                                             className="action-button">Deny</Button>
                                 </>
                             )}
                             <Button
-                                variant="outline-danger"
+                                variant="outline-warning"
                                 onClick={() => handleDelete(reimbursement.reimbId)}
                                 className="action-button"
                             >

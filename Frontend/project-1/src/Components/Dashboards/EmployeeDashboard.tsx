@@ -9,6 +9,8 @@ import "../../App.css";
 export const EmployeeDashboard: React.FC = () => {
     const [reimbursements, setReimbursements] = useState<any[]>([]);
     const [statusFilter, setStatusFilter] = useState<string>("ALL");
+    const [editReimbId, setEditReimbId] = useState<number | null>(null);
+    const [editDescription, setEditDescription] = useState<string>("");
     const navigate = useNavigate();
     const user = store.loggedInUser;
 
@@ -50,6 +52,22 @@ export const EmployeeDashboard: React.FC = () => {
         }
     };
 
+    const handleUpdateDescription = async (reimbId: number) => {
+        try {
+            await axios.patch(
+                `http://localhost:8080/reimbursements/${reimbId}/description`,
+                { description: editDescription },
+                { withCredentials: true }
+            );
+            setReimbursements(reimbursements.map(reimbursement =>
+                reimbursement.reimbId === reimbId ? { ...reimbursement, description: editDescription } : reimbursement
+            ));
+            setEditReimbId(null); // Exit edit mode after saving
+        } catch (error) {
+            console.error("Error updating reimbursement description:", error);
+        }
+    };
+
     if (!user) {
         return <div>Loading...</div>;
     }
@@ -62,11 +80,11 @@ export const EmployeeDashboard: React.FC = () => {
                     <h1>Employee Dashboard</h1>
                     <h2>Your Reimbursements</h2>
                     <Button
-                    variant="primary"
-                    onClick={() => navigate("/add-reimbursement")}
-                    className="mb-3"
+                        variant="primary"
+                        onClick={() => navigate("/add-reimbursement")}
+                        className="mb-3"
                     >
-                    Add Reimbursement
+                        Add Reimbursement
                     </Button>
                     <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)} className="mb-3">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -81,7 +99,7 @@ export const EmployeeDashboard: React.FC = () => {
                     </Dropdown>
 
                 </div>
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover variant="primary">
                     <thead>
                     <tr>
                         <th>Ticket ID</th>
@@ -96,25 +114,55 @@ export const EmployeeDashboard: React.FC = () => {
                     {reimbursements.map((reimbursement) => (
                         <tr key={reimbursement.reimbId}>
                             <td>{reimbursement.reimbId}</td>
-                            <td>{reimbursement.description}</td>
+                            <td>
+                                {editReimbId === reimbursement.reimbId ? (
+                                    <input
+                                        type="text"
+                                        value={editDescription}
+                                        onChange={(e) => setEditDescription(e.target.value)}
+                                    />
+                                ) : (
+                                    reimbursement.description
+                                )}
+                            </td>
                             <td>{formatCurrency(reimbursement.amount)}</td>
                             <td>{reimbursement.status}</td>
                             <td>
-                                <span
-                                    className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
-                                ></span>
+                                    <span
+                                        className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
+                                    ></span>
                             </td>
-                            <td style={{textAlign: "left"}}>
-                                {reimbursement.status === 'PENDING' && (
-                                    <Button
-                                        variant="outline-info"
-                                        onClick={() => navigate(`/update-description/${reimbursement.reimbId}`)}
-                                    >
-                                        Update Description
-                                    </Button>
+                            <td style={{ textAlign: "left" }}>
+                                {editReimbId === reimbursement.reimbId ? (
+                                    <>
+                                        <Button
+                                            variant="success"
+                                            onClick={() => handleUpdateDescription(reimbursement.reimbId)}
+                                            className="me-2"
+                                        >
+                                            Save
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() => setEditReimbId(null)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </>
+                                ) : (
+                                    reimbursement.status === "PENDING" && (
+                                        <Button
+                                            variant="outline-info"
+                                            onClick={() => {
+                                                setEditReimbId(reimbursement.reimbId);
+                                                setEditDescription(reimbursement.description);
+                                            }}
+                                        >
+                                            Update Description
+                                        </Button>
+                                    )
                                 )}
                             </td>
-
                         </tr>
                     ))}
                     </tbody>
