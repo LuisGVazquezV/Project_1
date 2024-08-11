@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Register: React.FC = () => {
     const [user, setUser] = useState({
@@ -30,14 +31,12 @@ export const Register: React.FC = () => {
             console.log(response.data);
             alert(`${response.data.username} was created!`);
 
-            // Assuming the response contains the role and user ID
-            const { role } = response.data;
-
             // Navigate based on the user's role
+            const { role } = response.data;
             if (role === "Employee") {
-                navigate("/employee-dashboard");
+                navigate("/");
             } else if (role === "Manager") {
-                navigate("/manager-dashboard");
+                navigate("/");
             } else {
                 navigate("/");
             }
@@ -51,23 +50,49 @@ export const Register: React.FC = () => {
     };
 
     return (
-        <div>
-            <div className="text-container">
-                <h3>Register for a new account here!</h3>
-                <div className="input-container">
-                    <input type="text" placeholder="First Name" name="firstName" onChange={storeValues} />
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="card p-4" style={{ width: '100%', maxWidth: '400px' }}>
+                <h3 className="text-center mb-4">Register For A New Account!</h3>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="First Name"
+                        name="firstName"
+                        onChange={storeValues}
+                    />
                 </div>
-                <div className="input-container">
-                    <input type="text" placeholder="Last Name" name="lastName" onChange={storeValues} />
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Last Name"
+                        name="lastName"
+                        onChange={storeValues}
+                    />
                 </div>
-                <div className="input-container">
-                    <input type="text" placeholder="Username" name="username" onChange={storeValues} />
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Username"
+                        name="username"
+                        onChange={storeValues}
+                    />
                 </div>
-                <div className="input-container">
-                    <input type="password" placeholder="Password" name="password" onChange={storeValues} />
+                <div className="mb-4">
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        name="password"
+                        onChange={storeValues}
+                    />
                 </div>
-                <button className="login-button" onClick={register}>Submit</button>
-                <button className="login-button" onClick={() => navigate("/")}>Back</button>
+                <div className="d-flex justify-content-between">
+                    <button className="btn btn-primary" onClick={register}>Submit</button>
+                    <button className="btn btn-secondary" onClick={() => navigate("/")}>Back</button>
+                </div>
             </div>
         </div>
     );

@@ -41,14 +41,14 @@ const CustomNavbar: React.FC = () => {
 
     return (
         <Navbar className={`navbar-custom ${isDarkMode ? 'navbar-dark-mode' : 'navbar-light-mode'}`} expand="lg">
-            <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }}>Dashboard</Navbar.Brand>
+            <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }}>| Dashboard |</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     {user.userId && (
                         <>
-                            <Nav.Link as={Link} to="/user-profile">Profile</Nav.Link>
-                            <Nav.Link as={Link} to="/add-reimbursement">Add Reimbursement</Nav.Link>
+                            <Nav.Link as={Link} to="/user-profile">| User Profile |</Nav.Link>
+                            <Nav.Link as={Link} to="/add-reimbursement">| Add Reimbursement |</Nav.Link>
                         </>
                     )}
                 </Nav>
@@ -58,11 +58,11 @@ const CustomNavbar: React.FC = () => {
                             <span className={`text-${isDarkMode ? 'light' : 'dark'} mr-3`}>
                                 {user.firstName} {user.lastName}
                             </span>
-                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>Logout</Nav.Link>
+                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>| Logout |</Nav.Link>
                         </>
                     )}
                     {!user.userId && (
-                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>Login</Nav.Link>
+                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>| Login |</Nav.Link>
                     )}
                 </Nav>
             </Navbar.Collapse>
