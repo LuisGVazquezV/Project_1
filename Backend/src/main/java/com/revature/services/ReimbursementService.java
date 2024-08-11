@@ -25,16 +25,16 @@ public class ReimbursementService {
     }
 
     public Reimbursement addReimbursement(IncomingReimbursementDTO newReimbursement) {
-        Reimbursement reimbursement = new Reimbursement(0,newReimbursement.getDescription(),newReimbursement.getAmount(), "PENDING", (User)null);
+        Reimbursement reimbursement = new Reimbursement(0, newReimbursement.getDescription(), newReimbursement.getAmount(), newReimbursement.getStatus(), null);
         Optional<User> u = this.uDAO.findById(newReimbursement.getUserId());
-        if(u.isPresent()){
-            reimbursement.setUser((User)u.get());
-            Reimbursement r = (Reimbursement)this.rDAO.save(reimbursement);
-            return r;
+        if (u.isPresent()) {
+            reimbursement.setUser(u.get());
+            return this.rDAO.save(reimbursement);
         } else {
             return null;
         }
     }
+
     /*@GetMapping*/
     public List<Reimbursement> getAllReimbursements() {
         return this.rDAO.findAll();

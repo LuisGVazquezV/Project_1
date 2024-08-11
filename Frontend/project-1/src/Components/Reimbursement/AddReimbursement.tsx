@@ -2,7 +2,6 @@ import { FormControl, Button } from "react-bootstrap";
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { store } from "../../globalData/store";
 
 export const AddReimbursement: React.FC = () => {
     const navigate = useNavigate();
@@ -13,7 +12,7 @@ export const AddReimbursement: React.FC = () => {
         const newReimbursement = {
             description: form.description.value,
             amount: parseFloat(form.amount.value),
-            status: form.status.value
+            // status is omitted as it's defaulted to 'PENDING'
         };
         try {
             await axios.post("http://localhost:8080/reimbursements", newReimbursement, {
@@ -31,7 +30,6 @@ export const AddReimbursement: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <FormControl type="text" placeholder="Enter Description" name="description" required />
                 <FormControl type="number" placeholder="Enter Amount" name="amount" required />
-                <FormControl type="text" placeholder="Enter Status" name="status" required />
                 <Button type="submit">Submit</Button>
             </form>
         </div>

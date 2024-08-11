@@ -56,6 +56,14 @@ public class ReimbursementController {
             return ResponseEntity.status(401).body("Unauthorized: You must be logged in to submit a reimbursement.");
         }
 
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(400).body("User ID not found in session.");
+        }
+
+        newReimbursement.setUserId(userId);
+        newReimbursement.setStatus("PENDING"); // Set default status
+
         Reimbursement r = this.rs.addReimbursement(newReimbursement);
         return r == null ? ResponseEntity.status(400).body("Couldn't find user with ID: " + newReimbursement.getUserId()) : ResponseEntity.status(201).body(r);
     }

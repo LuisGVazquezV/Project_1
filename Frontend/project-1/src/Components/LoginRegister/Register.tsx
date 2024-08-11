@@ -30,11 +30,11 @@ export const Register: React.FC = () => {
             console.log(response.data);
             alert(response.data.username + " was created!");
 
-            // Navigate based on the user's role or any other logic
+            // Navigate based on the user's role
             if (response.data.role === "Employee") {
-                navigate("/reimbursements");
+                navigate("/employee-dashboard");
             } else if (response.data.role === "Manager") {
-                navigate("/users");
+                navigate("/manager-dashboard");
             } else {
                 navigate("/");
             }

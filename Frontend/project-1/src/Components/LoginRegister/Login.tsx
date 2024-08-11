@@ -13,11 +13,7 @@ export const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const storeValues = (input: any) => {
-        if (input.target.name === "username") {
-            setUser((user) => ({ ...user, username: input.target.value }));
-        } else {
-            setUser((user) => ({ ...user, password: input.target.value }));
-        }
+        setUser((prev) => ({ ...prev, [input.target.name]: input.target.value }));
     };
 
     const login = async () => {
@@ -55,12 +51,11 @@ export const Login: React.FC = () => {
         }
     };
 
-
     return (
         <div className="login">
             <div className="text-container">
-                <h1>Welcome to the Car Exchange</h1>
-                <h3>Log in to Create and View Cars!</h3>
+                <h1>Welcome to the Employee Reimbursement System</h1>
+                <h3>Log in to Create and View Reimbursements!</h3>
 
                 <div className="input-container">
                     <input type="text" placeholder="username" name="username" onChange={storeValues} />
