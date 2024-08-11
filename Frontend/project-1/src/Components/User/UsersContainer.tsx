@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Table } from "react-bootstrap";
+import { useDarkMode } from "../../contexts/DarkmodeContext"; // Import the dark mode context
 
 export const UsersContainer: React.FC = () => {
     const [users, setUsers] = useState<any[]>([]);
+    const { isDarkMode } = useDarkMode(); // Get the dark mode state
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -37,7 +39,6 @@ export const UsersContainer: React.FC = () => {
         }
     };
 
-
     const handleUserDelete = async (userId: number) => {
         try {
             await axios.delete(`http://localhost:8080/users/${userId}`, {
@@ -51,8 +52,10 @@ export const UsersContainer: React.FC = () => {
 
     return (
         <div>
-            <h2>All Users</h2>
-            <Table striped bordered hover variant="primary" className="mt-4">
+            <div className="heading-section">
+                <h2>All Users</h2>
+            </div>
+            <Table striped bordered hover variant={isDarkMode ? "dark" : "primary"} className="mt-4">
                 <thead>
                 <tr>
                     <th>User ID</th>

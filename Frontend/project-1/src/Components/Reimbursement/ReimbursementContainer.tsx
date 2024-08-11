@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Table, Dropdown } from "react-bootstrap";
+import { useDarkMode } from "../../contexts/DarkmodeContext"; // Import the dark mode context
 import "../../App.css"; // Ensure this path is correct based on your project structure
 
 export const ReimbursementContainer: React.FC = () => {
     const [reimbursements, setReimbursements] = useState<any[]>([]);
     const [statusFilter, setStatusFilter] = useState<string>("ALL");
+    const { isDarkMode } = useDarkMode(); // Get the dark mode state
 
     useEffect(() => {
         const fetchReimbursements = async () => {
@@ -92,7 +94,7 @@ export const ReimbursementContainer: React.FC = () => {
                 </Dropdown>
             </div>
 
-            <Table striped bordered hover variant="primary" className="mt-3">
+            <Table striped bordered hover variant={isDarkMode ? "dark" : "primary"} className="mt-3">
                 <thead>
                 <tr>
                     <th>Reimbursement ID</th>

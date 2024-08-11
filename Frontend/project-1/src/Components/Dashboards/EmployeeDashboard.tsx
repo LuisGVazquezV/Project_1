@@ -5,6 +5,7 @@ import { store } from "../../globalData/store";
 import CustomNavbar from "../Navbar/Navbar";
 import { Button, Table, Dropdown } from "react-bootstrap";
 import "../../App.css";
+import { useDarkMode } from "../../contexts/DarkmodeContext"; // Import the dark mode context
 
 export const EmployeeDashboard: React.FC = () => {
     const [reimbursements, setReimbursements] = useState<any[]>([]);
@@ -13,6 +14,7 @@ export const EmployeeDashboard: React.FC = () => {
     const [editDescription, setEditDescription] = useState<string>("");
     const navigate = useNavigate();
     const user = store.loggedInUser;
+    const { isDarkMode } = useDarkMode(); // Get the dark mode state
 
     useEffect(() => {
         if (!user) {
@@ -87,7 +89,7 @@ export const EmployeeDashboard: React.FC = () => {
                         Add Reimbursement
                     </Button>
                     <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)} className="mb-3">
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
                             Status Filter
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -97,9 +99,8 @@ export const EmployeeDashboard: React.FC = () => {
                             <Dropdown.Item eventKey="DENIED">Denied</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
                 </div>
-                <Table striped bordered hover variant="primary">
+                <Table striped bordered hover variant={isDarkMode ? "dark" : "primary"}>
                     <thead>
                     <tr>
                         <th>Ticket ID</th>

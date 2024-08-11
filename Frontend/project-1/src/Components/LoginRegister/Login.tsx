@@ -54,7 +54,7 @@ export const Login: React.FC = () => {
 
             <Card className="p-4" style={{ maxWidth: '400px', width: '100%' }}>
                 <Card.Body>
-                    <Image src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000"/>
+                    <Image src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000" img-fluid/>
                     <Card.Title className="text-center mb-4 text-primary fs-1" >ERS</Card.Title>
                     <Card.Subtitle className="text-center mb-4 text-primary fs-5">Employee Reimbursement System</Card.Subtitle>
                     <Form>
