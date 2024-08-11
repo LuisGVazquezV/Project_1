@@ -1,8 +1,9 @@
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
-import { useState } from "react";
 import axios from "axios";
 import { store } from "../../globalData/store";
+import { Button, Container, Form, Row, Col, Card } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Login: React.FC = () => {
     const [user, setUser] = useState({
@@ -12,7 +13,7 @@ export const Login: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const storeValues = (input: any) => {
+    const storeValues = (input: React.ChangeEvent<HTMLInputElement>) => {
         setUser((prev) => ({ ...prev, [input.target.name]: input.target.value }));
     };
 
@@ -48,22 +49,54 @@ export const Login: React.FC = () => {
     };
 
     return (
-        <div className="login">
-            <div className="text-container">
-                <h1>Welcome to the Employee Reimbursement System</h1>
-                <h3>Log in to Create and View Reimbursements!</h3>
-
-                <div className="input-container">
-                    <input type="text" placeholder="username" name="username" onChange={storeValues} />
-                </div>
-
-                <div className="input-container">
-                    <input type="password" placeholder="password" name="password" onChange={storeValues} />
-                </div>
-
-                <button className="login-button" onClick={login}>Login</button>
-                <button className="login-button" onClick={() => navigate("/register")}>Create Account</button>
-            </div>
-        </div>
+        <Container className="d-flex justify-content-center align-items-center min-vh-100">
+            <Card className="p-4" style={{ maxWidth: '400px', width: '100%' }}>
+                <Card.Body>
+                    <Card.Title className="text-center mb-4">Login</Card.Title>
+                    <Form>
+                        <Form.Group controlId="formUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter your username"
+                                name="username"
+                                onChange={storeValues}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formPassword" className="mt-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter your password"
+                                name="password"
+                                onChange={storeValues}
+                            />
+                        </Form.Group>
+                        <Row className="mt-4">
+                            <Col>
+                                <Button
+                                    variant="primary"
+                                    className="w-100"
+                                    onClick={login}
+                                >
+                                    Login
+                                </Button>
+                            </Col>
+                        </Row>
+                        <Row className="mt-2">
+                            <Col>
+                                <Button
+                                    variant="secondary"
+                                    className="w-100"
+                                    onClick={() => navigate("/register")}
+                                >
+                                    Create Account
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 };

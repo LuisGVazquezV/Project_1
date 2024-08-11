@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { store } from "../../globalData/store";
 import { UserInterface } from "../../interfaces/UserInterface";
-import "../../App.css";
 import CustomNavbar from "../Navbar/Navbar";
+import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
+import "../../App.css";
 
 export const UserProfile: React.FC = () => {
     const [user, setUser] = useState<UserInterface>(store.loggedInUser);
@@ -44,44 +45,47 @@ export const UserProfile: React.FC = () => {
     };
 
     return (
-        <div><CustomNavbar />
-        <div className="container mt-4">
+        <div>
+            <CustomNavbar />
+            <Container className="mt-4">
+                <Row className="justify-content-center">
+                    <Col md={6}>
+                        <div className="text-center mb-4">
+                            <h1><strong>{user.firstName}{" "}{user.lastName}</strong></h1>
+                            <Image src="https://via.placeholder.com/200" roundedCircle className="mb-3"/>
 
-            <h1>User Profile</h1>
-            <div>
-                <p><strong>First Name:</strong> {user.firstName || "N/A"}</p>
-                <p><strong>Last Name:</strong> {user.lastName || "N/A"}</p>
-                <p><strong>Username:</strong> {user.username || "N/A"}</p>
-                <p><strong>Role:</strong> {user.role || "N/A"}</p>
-            </div>
-            {isEditing ? (
-                <div>
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <button onClick={handleUpdate} className="btn btn-primary mt-2">Save Changes</button>
-                    <button onClick={() => setIsEditing(false)} className="btn btn-secondary mt-2">Cancel</button>
-                </div>
-            ) : (
-                <button onClick={() => setIsEditing(true)} className="btn btn-primary mt-2">Update Username or Password</button>
-            )}
-        </div></div>
+                        </div>
+                        <div className="mb-4">
+                            <p><strong>Username:</strong> {user.username || "N/A"}</p>
+                            <p><strong>Role:</strong> {user.role || "N/A"}</p>
+                        </div>
+                        {isEditing ? (
+                            <div>
+                                <Form.Group controlId="username" className="mb-3">
+                                    <Form.Label>Username</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="password" className="mb-3">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Button onClick={handleUpdate} variant="primary" className="me-2">Save Changes</Button>
+                                <Button onClick={() => setIsEditing(false)} variant="secondary">Cancel</Button>
+                            </div>
+                        ) : (
+                            <Button onClick={() => setIsEditing(true)} variant="primary">Update Username or Password</Button>
+                        )}
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 };

@@ -3,17 +3,17 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { store } from "../../globalData/store";
+import { useDarkMode } from '../../contexts/DarkmodeContext'; // Update the import path as necessary
+import './CustomNavbar.css'; // Ensure this is the correct path
 
 const CustomNavbar: React.FC = () => {
     const navigate = useNavigate();
     const user = store.loggedInUser;
+    const { isDarkMode } = useDarkMode(); // Get dark mode state
 
     const handleLogout = async () => {
         try {
-            // Call the logout endpoint
             await axios.post('http://localhost:8080/auth/logout', {}, { withCredentials: true });
-
-            // Clear user state and local storage
             store.loggedInUser = {
                 userId: 0,
                 firstName: "",
@@ -23,8 +23,6 @@ const CustomNavbar: React.FC = () => {
                 role: ""
             };
             localStorage.removeItem('loggedInUser');
-
-            // Navigate to the login page
             navigate("/");
         } catch (error) {
             console.error("Error during logout:", error);
@@ -42,7 +40,7 @@ const CustomNavbar: React.FC = () => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar className={`navbar-custom ${isDarkMode ? 'navbar-dark-mode' : 'navbar-light-mode'}`} expand="lg">
             <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }}>Dashboard</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -57,12 +55,14 @@ const CustomNavbar: React.FC = () => {
                 <Nav className="ml-auto d-flex align-items-center">
                     {user.userId && (
                         <>
-                            <span className="text-light mr-3">{user.firstName} {user.lastName}</span>
-                            <Nav.Link onClick={handleLogout} className="text-light">Logout</Nav.Link>
+                            <span className={`text-${isDarkMode ? 'light' : 'dark'} mr-3`}>
+                                {user.firstName} {user.lastName}
+                            </span>
+                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>Logout</Nav.Link>
                         </>
                     )}
                     {!user.userId && (
-                        <Nav.Link as={Link} to="/">Login</Nav.Link>
+                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>Login</Nav.Link>
                     )}
                 </Nav>
             </Navbar.Collapse>
