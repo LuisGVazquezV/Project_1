@@ -1,10 +1,14 @@
-export const store:any = {
+import {UserInterface} from "../interfaces/UserInterface"
 
-    loggedInUser: {
+export const store:any ={
+    loggedInUser:{
         userId:0,
+        firstName:"",
+        lastName:"",
         username:"",
+        password:"",
         role:""
-    },
+    } as UserInterface,
 
-    baseURL: "http://localhost:8080"
+    baseUrl:"http://localhost:8080/"
 }

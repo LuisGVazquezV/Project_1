@@ -10,13 +10,16 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/reimbursements")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ReimbursementController {
     private ReimbursementService rs;
     private UserDAO uDAO;
@@ -46,6 +49,7 @@ public class ReimbursementController {
         return false;
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> addReimbursement(@RequestBody IncomingReimbursementDTO newReimbursement, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -56,6 +60,7 @@ public class ReimbursementController {
         return r == null ? ResponseEntity.status(400).body("Couldn't find user with ID: " + newReimbursement.getUserId()) : ResponseEntity.status(201).body(r);
     }
 
+    @Transactional
     @GetMapping
     public ResponseEntity<Object> getAllReimbursements(HttpSession session) {
         if (!isLoggedIn(session) || !hasValidRole(session, "Manager")) {
@@ -65,6 +70,7 @@ public class ReimbursementController {
         return ResponseEntity.ok(this.rs.getAllReimbursements());
     }
 
+    @Transactional
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getReimbursementsByUserId(@PathVariable int userId, HttpSession session) {
         if (!isLoggedIn(session) || !hasValidRole(session, "Employee", "Manager")) {
@@ -74,6 +80,7 @@ public class ReimbursementController {
         return ResponseEntity.ok(this.rs.getReimbursementsByUserId(userId));
     }
 
+    @Transactional
     @GetMapping("/status/{status}")
     public ResponseEntity<Object> getReimbursementsByStatus(@PathVariable String status, HttpSession session) {
         if (!isLoggedIn(session) || !hasValidRole(session, "Manager")) {
@@ -83,6 +90,7 @@ public class ReimbursementController {
         return ResponseEntity.ok(this.rs.getReimbursementsByStatus(status));
     }
 
+    @Transactional
     @GetMapping("/{userId}/status/{status}")
     public ResponseEntity<Object> getReimbursementsByUserIdAndStatus(
             @PathVariable int userId,
@@ -102,23 +110,29 @@ public class ReimbursementController {
 
 
 
+    @Transactional
     @PatchMapping("/{reimbId}")
-    public ResponseEntity<Object> updateReimbursementStatus(@RequestBody String status, @PathVariable int reimbId, HttpSession session) {
+    public ResponseEntity<Object> updateReimbursementStatus(@RequestBody Map<String, String> statusMap, @PathVariable int reimbId, HttpSession session) {
         String role = (String) session.getAttribute("role");
-        if (role ==null || !role.equalsIgnoreCase("Manager")) {
+        String status = statusMap.get("status");
+
+        if (role == null || !role.equalsIgnoreCase("Manager")) {
             return ResponseEntity.status(403).body("Unauthorized access: Only managers can update reimbursement status");
-
         }
-        Reimbursement updatedReimbursement = this.rs.updateReimbursementStatus(reimbId, status);
-        return updatedReimbursement == null ? ResponseEntity.status(400).body("Reimbursement not found with ID: " + reimbId) : ResponseEntity.ok(updatedReimbursement);
 
+        Reimbursement updatedReimbursement = this.rs.updateReimbursementStatus(reimbId, status);
+        return updatedReimbursement == null
+                ? ResponseEntity.status(400).body("Reimbursement not found with ID: " + reimbId)
+                : ResponseEntity.ok(updatedReimbursement.getStatus());
     }
 
+
+
+
+    @Transactional
     @PatchMapping("/{reimbId}/description")
-    public ResponseEntity<Object> updateReimbursementDescription(
-            @RequestBody String description,
-            @PathVariable int reimbId,
-            HttpSession session) {
+    public ResponseEntity<Object> updateReimbursementDescription(@RequestBody Map<String, String> descriptionMap, @PathVariable int reimbId, HttpSession session) {
+        String description = descriptionMap.get("description");
 
         if (!isLoggedIn(session) || !hasValidRole(session, "Employee", "Manager")) {
             return ResponseEntity.status(403).body("Unauthorized access.");
@@ -130,20 +144,17 @@ public class ReimbursementController {
             return ResponseEntity.status(400).body("Reimbursement not found or not in PENDING status.");
         }
 
-        return ResponseEntity.ok(updatedReimbursement);
+        return ResponseEntity.ok(updatedReimbursement.getDescription());
     }
 
     @DeleteMapping("/{reimbId}")
-    public ResponseEntity<Object> deleteReimbursementById(@PathVariable int reimbId, HttpSession session) {
-        if (!isLoggedIn(session) || !hasValidRole(session, "Manager")) {
-            return ResponseEntity.status(403).body("Unauthorized access: Only managers can delete reimbursements.");
+    public ResponseEntity<Object> deleteReimbursement(@PathVariable int reimbId, HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equalsIgnoreCase("Manager")) {
+            return ResponseEntity.status(403).body("Unauthorized access: Only managers can delete reimbursements");
         }
 
-        if (this.rs.getReimbursementById(reimbId).isEmpty()) {
-            return ResponseEntity.status(400).body("Reimbursement not found with ID: " + reimbId);
-        }
-        this.rs.deleteReimbursementById(reimbId);
-
+        rs.deleteReimbursementById(reimbId);
         return ResponseEntity.ok("Reimbursement with ID: " + reimbId + " deleted successfully");
     }
 

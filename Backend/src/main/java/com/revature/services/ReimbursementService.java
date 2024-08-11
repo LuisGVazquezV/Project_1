@@ -35,7 +35,7 @@ public class ReimbursementService {
             return null;
         }
     }
-    @GetMapping
+    /*@GetMapping*/
     public List<Reimbursement> getAllReimbursements() {
         return this.rDAO.findAll();
     }
@@ -44,8 +44,8 @@ public class ReimbursementService {
         return this.rDAO.findByUserUserId(userId);
     }
 
-    public Optional<Reimbursement> getReimbursementById(int reimbId) {
-        return this.rDAO.findById(reimbId);
+    public Reimbursement getReimbursementById(int reimbId) {
+        return rDAO.findById(reimbId).orElse(null);
     }
 
     public List<Reimbursement> getReimbursementsByStatus(String status) {
@@ -89,15 +89,11 @@ public class ReimbursementService {
         }
     }
 
-    public Reimbursement deleteReimbursementById(int reimbId) {
-        Optional<Reimbursement> existingReimbursement = this.rDAO.findById(reimbId);
-        if(existingReimbursement.isPresent()){
-            Reimbursement r = (Reimbursement)existingReimbursement.get();
-            this.rDAO.delete(r);
-            return r;
-        }else{
-            return null;
-        }
+    public void deleteReimbursementById(int reimbId) {
+
+        Reimbursement reimbursement = rDAO.findById(reimbId).get();
+        reimbursement.getUser().getReimbursements().remove(reimbursement);
+        rDAO.deleteById(reimbId);
     }
 
 }

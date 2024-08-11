@@ -35,4 +35,9 @@
   to {
     transform: rotate(360deg);
   }
+
+}
+
+.navbar {
+  margin-bottom: 20px;
 }
