@@ -109,12 +109,9 @@ public class ReimbursementController {
             return ResponseEntity.status(403).body("Unauthorized access.");
         }
 
-        if (!status.equalsIgnoreCase("PENDING")) {
-            return ResponseEntity.status(400).body("Invalid status. Only 'PENDING' status is allowed.");
-        }
-
         return ResponseEntity.ok(this.rs.getReimbursementsByUserIdAndStatus(userId, status));
     }
+
 
 
 

@@ -45,5 +45,30 @@ public class UserService {
         }
     }
 
+    public User updateUserById(int userId, User userUpdates) {
+        Optional<User> existingUserOpt = this.uDAO.findById(userId);
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
 
+            // Update only the fields provided
+            if (userUpdates.getFirstName() != null && !userUpdates.getFirstName().isEmpty()) {
+                existingUser.setFirstName(userUpdates.getFirstName());
+            }
+            if (userUpdates.getLastName() != null && !userUpdates.getLastName().isEmpty()) {
+                existingUser.setLastName(userUpdates.getLastName());
+            }
+            if (userUpdates.getUsername() != null && !userUpdates.getUsername().isEmpty()) {
+                existingUser.setUsername(userUpdates.getUsername());
+            }
+            if (userUpdates.getPassword() != null && !userUpdates.getPassword().isEmpty()) {
+                existingUser.setPassword(userUpdates.getPassword());
+            }
+
+            return this.uDAO.save(existingUser);
+        } else {
+            return null; // User not found
+        }
+    }
 }
+
+

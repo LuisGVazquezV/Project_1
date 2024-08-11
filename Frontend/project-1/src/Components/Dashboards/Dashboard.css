@@ -1,0 +1,24 @@
+.dashboard-header {
+    text-align: left;
+    margin-left: 20px; /* Adjust the value to control indentation */
+    margin-bottom: 20px;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.status-pending {
+    background-color: yellow;
+}
+
+.status-approved {
+    background-color: green;
+}
+
+.status-denied {
+    background-color: red;
+}

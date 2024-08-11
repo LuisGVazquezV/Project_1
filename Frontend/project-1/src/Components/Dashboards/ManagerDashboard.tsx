@@ -4,6 +4,7 @@ import { Button, Container } from "react-bootstrap";
 import CustomNavbar from "../Navbar/Navbar";
 import {ReimbursementContainer} from "../Reimbursement/ReimbursementContainer";
 import {UsersContainer} from "../User/UsersContainer";
+import "../../App.css";
 
 
 function UserContainer() {
@@ -17,7 +18,7 @@ export const ManagerDashboard: React.FC = () => {
         <div>
             <CustomNavbar />
             <Container className="mt-4">
-                <h1>Manager Dashboard</h1>
+                <h1 className= "dashboard-header">Manager Dashboard</h1>
                 <Button
                     variant="outline-primary"
                     onClick={() => setActiveTab("reimbursements")}

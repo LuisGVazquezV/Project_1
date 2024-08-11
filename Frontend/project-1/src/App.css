@@ -41,3 +41,50 @@
 .navbar {
   margin-bottom: 20px;
 }
+
+/* App.css */
+.dashboard-header {
+  text-align: left;
+  margin-left: 20px; /* Adjust the value to control indentation */
+  margin-bottom: 20px;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.status-pending {
+  background-color: yellow;
+}
+
+.status-approved {
+  background-color: green;
+}
+
+.status-denied {
+  background-color: red;
+}
+
+/* Container for the reimbursement table and filters */
+.reimbursement-container {
+  margin-left: 20px;
+}
+
+/* Styling for the heading and button section */
+.heading-section {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+/* Adding spacing between action buttons */
+.action-button {
+  margin-right: 10px; /* Adjust this value for more or less space */
+}
+
+/* For the last button, remove the right margin to avoid unnecessary spacing */
+.action-button:last-child {
+  margin-right: 0;
+}

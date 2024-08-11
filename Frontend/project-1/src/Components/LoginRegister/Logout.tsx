@@ -8,17 +8,22 @@ export const Logout: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            // Send request to backend to logout user
-            await axios.post("http://localhost:8080/auth/logout", {}, { withCredentials: true });
+            await axios.post('http://localhost:8080/auth/logout', {}, { withCredentials: true });
 
-            // Clear user data from global state
-            store.loggedInUser = null;
+            // Clear user data from store and localStorage
+            store.loggedInUser = {
+                userId: 0,
+                firstName: "",
+                lastName: "",
+                username: "",
+                password: "",
+                role: ""
+            };
+            localStorage.removeItem('loggedInUser');
 
-            // Redirect to login page
-            navigate("/");
+            navigate("/login");
         } catch (error) {
-            console.error("Logout failed:", error);
-            alert("Logout failed! Please try again.");
+            console.error("Error during logout:", error);
         }
     };
 

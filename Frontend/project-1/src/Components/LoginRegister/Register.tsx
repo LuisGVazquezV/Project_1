@@ -28,12 +28,15 @@ export const Register: React.FC = () => {
         try {
             const response = await axios.post("http://localhost:8080/users/register", user);
             console.log(response.data);
-            alert(response.data.username + " was created!");
+            alert(`${response.data.username} was created!`);
+
+            // Assuming the response contains the role and user ID
+            const { role } = response.data;
 
             // Navigate based on the user's role
-            if (response.data.role === "Employee") {
+            if (role === "Employee") {
                 navigate("/employee-dashboard");
-            } else if (response.data.role === "Manager") {
+            } else if (role === "Manager") {
                 navigate("/manager-dashboard");
             } else {
                 navigate("/");
@@ -58,10 +61,10 @@ export const Register: React.FC = () => {
                     <input type="text" placeholder="Last Name" name="lastName" onChange={storeValues} />
                 </div>
                 <div className="input-container">
-                    <input type="text" placeholder="username" name="username" onChange={storeValues} />
+                    <input type="text" placeholder="Username" name="username" onChange={storeValues} />
                 </div>
                 <div className="input-container">
-                    <input type="password" placeholder="password" name="password" onChange={storeValues} />
+                    <input type="password" placeholder="Password" name="password" onChange={storeValues} />
                 </div>
                 <button className="login-button" onClick={register}>Submit</button>
                 <button className="login-button" onClick={() => navigate("/")}>Back</button>

@@ -21,7 +21,7 @@ export const Login: React.FC = () => {
             const response = await axios.post("http://localhost:8080/auth", user, { withCredentials: true });
             const userData = response.data;
 
-            // Ensure that store.loggedInUser contains necessary user details
+            // Update store
             store.loggedInUser = {
                 userId: userData.userId,
                 username: userData.username,
@@ -33,16 +33,12 @@ export const Login: React.FC = () => {
             // Persist user details in localStorage
             localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
 
-            // Display a welcome message with username (optional)
-            alert(`Welcome, ${store.loggedInUser.username}`);
-
             // Navigate based on the user's role
             if (userData.role === "Employee") {
                 navigate("/employee-dashboard");
             } else if (userData.role === "Manager") {
                 navigate("/manager-dashboard");
             } else {
-                // Handle other roles or default navigation
                 navigate("/");
             }
         } catch (error) {

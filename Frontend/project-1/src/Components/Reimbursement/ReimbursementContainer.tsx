@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Table, Dropdown } from "react-bootstrap";
+import "../../App.css"; // Ensure this path is correct based on your project structure
 
 export const ReimbursementContainer: React.FC = () => {
     const [reimbursements, setReimbursements] = useState<any[]>([]);
@@ -57,20 +58,39 @@ export const ReimbursementContainer: React.FC = () => {
         }
     };
 
+    const getStatusIndicatorClass = (status: string) => {
+        switch (status) {
+            case "PENDING":
+                return "status-pending";
+            case "APPROVED":
+                return "status-approved";
+            case "DENIED":
+                return "status-denied";
+            default:
+                return "";
+        }
+    };
+
+    const formatCurrency = (amount: number) => {
+        return `$${amount.toFixed(2)}`;
+    };
+
     return (
-        <div>
-            <h2>All Reimbursements</h2>
-            <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)}>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Status Filter
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item eventKey="ALL">All</Dropdown.Item>
-                    <Dropdown.Item eventKey="PENDING">Pending</Dropdown.Item>
-                    <Dropdown.Item eventKey="APPROVED">Approved</Dropdown.Item>
-                    <Dropdown.Item eventKey="DENIED">Denied</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
+        <div className="reimbursement-container">
+            <div className="heading-section">
+                <h2>All Reimbursements</h2>
+                <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)} className="mb-3">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Status Filter
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item eventKey="ALL">All</Dropdown.Item>
+                        <Dropdown.Item eventKey="PENDING">Pending</Dropdown.Item>
+                        <Dropdown.Item eventKey="APPROVED">Approved</Dropdown.Item>
+                        <Dropdown.Item eventKey="DENIED">Denied</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
 
             <Table striped bordered hover variant="dark" className="mt-3">
                 <thead>
@@ -79,6 +99,7 @@ export const ReimbursementContainer: React.FC = () => {
                     <th>Description</th>
                     <th>Amount</th>
                     <th>Status</th>
+                    <th></th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -87,18 +108,28 @@ export const ReimbursementContainer: React.FC = () => {
                     <tr key={reimbursement.reimbId}>
                         <td>{reimbursement.reimbId}</td>
                         <td>{reimbursement.description}</td>
-                        <td>{reimbursement.amount}</td>
+                        <td>{formatCurrency(reimbursement.amount)}</td>
                         <td>{reimbursement.status}</td>
+                        <td>
+                            <span
+                                className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
+                            ></span>
+                        </td>
                         <td>
                             {reimbursement.status === 'PENDING' && (
                                 <>
-                                    <Button variant="outline-info" onClick={() => handleUpdate(reimbursement.reimbId, 'APPROVED')}>Approve</Button>
-                                    <Button variant="outline-info" onClick={() => handleUpdate(reimbursement.reimbId, 'DENIED')}>Deny</Button>
+                                    <Button variant="outline-info"
+                                            onClick={() => handleUpdate(reimbursement.reimbId, 'APPROVED')}
+                                            className="action-button">Approve</Button>
+                                    <Button variant="outline-info"
+                                            onClick={() => handleUpdate(reimbursement.reimbId, 'DENIED')}
+                                            className="action-button">Deny</Button>
                                 </>
                             )}
                             <Button
                                 variant="outline-danger"
                                 onClick={() => handleDelete(reimbursement.reimbId)}
+                                className="action-button"
                             >
                                 Delete
                             </Button>

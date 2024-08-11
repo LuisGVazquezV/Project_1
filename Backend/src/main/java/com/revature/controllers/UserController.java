@@ -4,6 +4,7 @@ import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-
 public class UserController {
     @Autowired
     private UserService us;
@@ -79,5 +79,40 @@ public class UserController {
         return updatedUser == null
                 ? ResponseEntity.status(400).body("User not found with ID: " + userId)
                 : ResponseEntity.ok(updatedUser.getRole()); // Return just the role
+    }
+
+    @Transactional
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+        User user = us.getUserById(userId);
+        if (user == null) {
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @PatchMapping("/update/{userId}")
+    public ResponseEntity<User> updateUserById(@PathVariable int userId, @RequestBody User userUpdates) {
+        User existingUser = us.getUserById(userId);
+
+        if (existingUser == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        if (userUpdates.getFirstName() != null && !userUpdates.getFirstName().isEmpty()) {
+            existingUser.setFirstName(userUpdates.getFirstName());
+        }
+        if (userUpdates.getLastName() != null && !userUpdates.getLastName().isEmpty()) {
+            existingUser.setLastName(userUpdates.getLastName());
+        }
+        if (userUpdates.getUsername() != null && !userUpdates.getUsername().isEmpty()) {
+            existingUser.setUsername(userUpdates.getUsername());
+        }
+        if (userUpdates.getPassword() != null && !userUpdates.getPassword().isEmpty()) {
+            existingUser.setPassword(userUpdates.getPassword());
+        }
+
+        User updatedUser = us.updateUserById(userId, existingUser);
+        return ResponseEntity.ok(updatedUser);
     }
 }
