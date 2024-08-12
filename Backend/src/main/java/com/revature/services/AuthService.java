@@ -31,12 +31,14 @@ public class AuthService {
             //if the user is not null (username/password pair match a user)...
 
             //Create an outgoing UserDTO and send it to the Controller
-            OutgoingUserDTO outUser = new OutgoingUserDTO(u.getUserId(), u.getUsername(), u.getRole());
+            OutgoingUserDTO outUser = new OutgoingUserDTO(u.getUserId(), u.getUsername(), u.getRole(), u.getFirstName(), u.getLastName());
 
             //Initialize the HttpSession sent in from AuthController and give it values
             session.setAttribute("userId", u.getUserId());
             session.setAttribute("username", u.getUsername());
             session.setAttribute("role", u.getRole());
+            session.setAttribute("firstName", u.getFirstName());
+            session.setAttribute("lastName", u.getLastName());
             //WHY STORE THESE?? plenty of reasons:
             //-uniquely identify the user in the backend logic and HTTP responses
             //ex: use the stored userId in "findBy" methods to clean up the URL

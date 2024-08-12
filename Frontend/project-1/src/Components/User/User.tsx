@@ -47,7 +47,7 @@ export const User: React.FC<{ users: UserInterface[] }> = ({ users }) => {
                 );
                 console.log(response.data);
                 setUserOptions(false);
-                // Optionally, refresh the users list after role update
+
             } catch (error) {
                 console.error("Error updating role:", error);
             }

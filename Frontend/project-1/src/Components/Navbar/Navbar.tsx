@@ -4,12 +4,22 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { store } from "../../globalData/store";
 import { useDarkMode } from '../../contexts/DarkmodeContext';
-import './CustomNavbar.css'; // Ensure this path is correct
+import './CustomNavbar.css';
 
 const CustomNavbar: React.FC = () => {
     const navigate = useNavigate();
     const user = store.loggedInUser;
     const { isDarkMode } = useDarkMode();
+
+    console.log("User data in Navbar:", user); // Debugging line
+
+    localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
+
+// Retrieve from localStorage
+    const savedUser = localStorage.getItem('loggedInUser');
+    if (savedUser) {
+        store.loggedInUser = JSON.parse(savedUser);
+    }
 
     const handleLogout = async () => {
         try {
@@ -41,32 +51,38 @@ const CustomNavbar: React.FC = () => {
 
     return (
         <Navbar className={`navbar-custom ${isDarkMode ? 'navbar-dark-mode' : 'navbar-light-mode'}`} expand="lg">
-            <Navbar.Brand onClick={handleHomeClick} style={{cursor: 'pointer'}}><img
-                src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000" alt="" width="30" height="30"/>|
-                Dashboard |</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+            <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
+                <img
+                    src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000"
+                    alt="Logo"
+                    width="30"
+                    height="30"
+                />
+                {user.userId ? ` | ${user.firstName} ${user.lastName}  |` : ` | Dashboard |`}
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     {user.userId && (
                         <>
                             <Nav.Link as={Link} to="/user-profile">| User Profile |</Nav.Link>
-                            <Nav.Link as={Link} to="/add-reimbursement">| Add Reimbursement |</Nav.Link>
+
                         </>
                     )}
                 </Nav>
                 <Nav className="ml-auto d-flex align-items-center">
-                    {user.userId && (
+                    {user.userId ? (
                         <>
                             <span className={`text-${isDarkMode ? 'light' : 'dark'} mr-3`}>
-                                {user.firstName} {user.lastName}
                             </span>
-                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>|
-                                Logout |</Nav.Link>
+                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>
+                                | Logout |
+                            </Nav.Link>
                         </>
-                    )}
-                    {!user.userId && (
-                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>| Login
-                            |</Nav.Link>
+                    ) : (
+                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>
+                            | Login |
+                        </Nav.Link>
                     )}
                 </Nav>
             </Navbar.Collapse>

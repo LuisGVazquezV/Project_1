@@ -3,6 +3,8 @@ import { FormControl, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CustomNavbar from "../Navbar/Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AddReimbursement: React.FC = () => {
     const navigate = useNavigate();
@@ -13,25 +15,29 @@ export const AddReimbursement: React.FC = () => {
         const newReimbursement = {
             description: form.description.value,
             amount: parseFloat(form.amount.value),
-            // status is omitted as it's defaulted to 'PENDING'
+
         };
         try {
             await axios.post("http://localhost:8080/reimbursements", newReimbursement, {
                 withCredentials: true
             });
-            // Show alert message
-            alert('Thank you for submitting. Wait for Manager to resolve.');
-            // Redirect to the employee dashboard
-            navigate("/employee-dashboard"); // Update this path if necessary
+
+            toast.success('Thank you for submitting. Await Manager review.');
+
+
+            setTimeout(() => {
+                navigate("/employee-dashboard");
+            }, 2500); // Delay for 2 seconds, adjust as needed
         } catch (error) {
             console.error("Error creating reimbursement:", error);
-            alert('Failed to submit reimbursement. Please try again.');
+            toast.error('Failed to submit reimbursement. Please try again.');
         }
     };
 
     return (
         <div>
             <CustomNavbar />
+            <ToastContainer />
             <Container className="mt-4">
                 <h3 className="mb-4">Enter New Reimbursement Info:</h3>
                 <Row className="justify-content-center">
@@ -49,7 +55,7 @@ export const AddReimbursement: React.FC = () => {
                                 placeholder="Enter Amount"
                                 name="amount"
                                 required
-                                step="0.01" // Allows decimal values
+                                step="0.01"
                                 className="mb-3"
                             />
                             <Button type="submit" variant="primary" className="w-100">

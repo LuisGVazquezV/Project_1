@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../globalData/store";
 import CustomNavbar from "../Navbar/Navbar";
 import { Button, Table, Dropdown } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "../../App.css";
 import { useDarkMode } from "../../contexts/DarkmodeContext"; // Import the dark mode context
 
@@ -30,7 +32,7 @@ export const EmployeeDashboard: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                console.error("Error fetching reimbursements:", error);
+                toast.error("Error fetching reimbursements.");
             }
         };
 
@@ -64,9 +66,10 @@ export const EmployeeDashboard: React.FC = () => {
             setReimbursements(reimbursements.map(reimbursement =>
                 reimbursement.reimbId === reimbId ? { ...reimbursement, description: editDescription } : reimbursement
             ));
+            toast.success("Description updated successfully!");
             setEditReimbId(null); // Exit edit mode after saving
         } catch (error) {
-            console.error("Error updating reimbursement description:", error);
+            toast.error("Error updating reimbursement description.");
         }
     };
 
@@ -77,10 +80,11 @@ export const EmployeeDashboard: React.FC = () => {
     return (
         <div>
             <CustomNavbar />
+            <ToastContainer />
             <div className="container mt-4">
                 <div className="dashboard-header">
                     <h1>Employee Dashboard</h1>
-                    <h2>Your Reimbursements</h2>
+                    <h2>Your Reimbursement Tickets</h2>
                     <Button
                         variant="primary"
                         onClick={() => navigate("/add-reimbursement")}
@@ -129,9 +133,9 @@ export const EmployeeDashboard: React.FC = () => {
                             <td>{formatCurrency(reimbursement.amount)}</td>
                             <td>{reimbursement.status}</td>
                             <td>
-                                    <span
-                                        className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
-                                    ></span>
+                                <span
+                                    className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
+                                ></span>
                             </td>
                             <td style={{ textAlign: "left" }}>
                                 {editReimbId === reimbursement.reimbId ? (

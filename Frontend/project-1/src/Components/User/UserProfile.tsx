@@ -4,6 +4,8 @@ import { store } from "../../globalData/store";
 import { UserInterface } from "../../interfaces/UserInterface";
 import CustomNavbar from "../Navbar/Navbar";
 import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../App.css";
 
 export const UserProfile: React.FC = () => {
@@ -20,6 +22,7 @@ export const UserProfile: React.FC = () => {
                 setUsername(response.data.username);
             } catch (error) {
                 console.error("Error fetching user data:", error);
+                toast.error("Failed to fetch user data.");
             }
         };
 
@@ -39,8 +42,10 @@ export const UserProfile: React.FC = () => {
                 password: password
             }));
             setIsEditing(false);
+            toast.success("User data updated successfully!");
         } catch (error) {
             console.error("Error updating user data:", error);
+            toast.error("Failed to update user data.");
         }
     };
 
@@ -51,11 +56,11 @@ export const UserProfile: React.FC = () => {
                 <Row className="justify-content-center">
                     <Col md={6}>
                         <div className="text-center mb-4">
-                            <h1><strong>{user.firstName}{" "}{user.lastName}</strong></h1>
+                            <h1><strong>{user.firstName} {user.lastName}</strong></h1>
                             <Image src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000" img-fluid width={200} height={200} roundedCircle className="mb-3"/>
-
                         </div>
                         <div className="mb-4">
+                            <p><strong>User ID:</strong> {user.userId || "N/A"}</p>
                             <p><strong>Username:</strong> {user.username || "N/A"}</p>
                             <p><strong>Role:</strong> {user.role || "N/A"}</p>
                         </div>
@@ -86,6 +91,7 @@ export const UserProfile: React.FC = () => {
                     </Col>
                 </Row>
             </Container>
+            <ToastContainer />
         </div>
     );
 };

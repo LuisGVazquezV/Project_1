@@ -6,9 +6,9 @@ import { Login } from "./Components/LoginRegister/Login";
 import { Register } from "./Components/LoginRegister/Register";
 import { AddReimbursement } from "./Components/Reimbursement/AddReimbursement";
 import { UserProfile } from "./Components/User/UserProfile";
-import { DarkModeProvider, useDarkMode } from './contexts/DarkmodeContext'; // Update the import path as necessary
+import { DarkModeProvider, useDarkMode } from './contexts/DarkmodeContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css'; // Ensure this file contains your dark mode styles
+import './styles.css';
 
 const AppContent: React.FC = () => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();

@@ -1,38 +1,37 @@
-/* CustomNavbar.css */
 .navbar-custom {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .navbar-dark-mode {
-    background-color: #232c40; /* Dark color */
-    color: #ffffff; /* Light text */
+    background-color: #232c40;
+    color: #ffffff;
 }
 
 .navbar-light-mode {
-    background-color: #31af94; /* Light color */
-    color: #354260; /* Dark text */
+    background-color: #31af94;
+    color: #354260;
 }
 
 .navbar-dark-mode .nav-link {
-    color: #ffffff; /* Light text for links in dark mode */
+    color: #ffffff;
 }
 
 .navbar-light-mode .nav-link {
-    color: #354260; /* Dark text for links in light mode */
+    color: #354260;
 }
 
 .navbar-dark-mode .nav-link:hover {
-    text-shadow: 1px 1px 2px #55e1b6; /* Highlight link text in dark mode */
+    text-shadow: 1px 1px 2px #55e1b6;
 }
 
 .navbar-light-mode .nav-link:hover {
-    text-shadow: 1px 1px 2px #32c9b4; /* Highlight link text in light mode */
+    text-shadow: 1px 1px 2px #32c9b4;
 }
 
 .navbar-dark-mode .navbar-brand {
-    color: #ffffff; /* Light text for brand in dark mode */
+    color: #ffffff;
 }
 
 .navbar-light-mode .navbar-brand {
-    color: #354260; /* Dark text for brand in light mode */
+    color: #354260;
 }

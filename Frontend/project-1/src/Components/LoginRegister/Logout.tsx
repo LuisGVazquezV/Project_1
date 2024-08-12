@@ -10,7 +10,7 @@ export const Logout: React.FC = () => {
         try {
             await axios.post('http://localhost:8080/auth/logout', {}, { withCredentials: true });
 
-            // Clear user data from store and localStorage
+
             store.loggedInUser = {
                 userId: 0,
                 firstName: "",
@@ -27,7 +27,7 @@ export const Logout: React.FC = () => {
         }
     };
 
-    // Call handleLogout when the component mounts
+
     useEffect(() => {
         handleLogout();
     }, []);

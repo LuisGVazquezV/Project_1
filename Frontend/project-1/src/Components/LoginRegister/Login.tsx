@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { store } from "../../globalData/store";
-import {Button, Container, Form, Row, Col, Card, Image, CardHeader} from "react-bootstrap";
+import { Button, Container, Form, Row, Col, Card, Image } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Login: React.FC = () => {
@@ -31,10 +31,10 @@ export const Login: React.FC = () => {
                 role: userData.role
             };
 
-            // Persist user details in localStorage
+
             localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
 
-            // Navigate based on the user's role
+
             if (userData.role === "Employee") {
                 navigate("/employee-dashboard");
             } else if (userData.role === "Manager") {
@@ -49,15 +49,16 @@ export const Login: React.FC = () => {
     };
 
     return (
-
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
-
-            <Card className="p-4" style={{ maxWidth: '400px', width: '100%' }}>
+            <Card className="p-4" style={{maxWidth: '400px', width: '100%' }}>
                 <Card.Body>
-                    <Image src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000" img-fluid/>
-                    <Card.Title className="text-center mb-4 text-primary fs-1" >ERS</Card.Title>
+                    <Image
+                        src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000"
+                        fluid
+                    />
+                    <Card.Title className="text-center mb-4 text-primary fs-1">ERS</Card.Title>
                     <Card.Subtitle className="text-center mb-4 text-primary fs-5">Employee Reimbursement System</Card.Subtitle>
-                    <Form>
+                    <Form onSubmit={(e) => { e.preventDefault(); login(); }}>
                         <Form.Group controlId="formUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control
@@ -65,6 +66,7 @@ export const Login: React.FC = () => {
                                 placeholder="Enter your username"
                                 name="username"
                                 onChange={storeValues}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="formPassword" className="mt-3">
@@ -74,14 +76,15 @@ export const Login: React.FC = () => {
                                 placeholder="Enter your password"
                                 name="password"
                                 onChange={storeValues}
+                                required
                             />
                         </Form.Group>
                         <Row className="mt-4">
                             <Col>
                                 <Button
+                                    type="submit"
                                     variant="primary"
                                     className="w-100"
-                                    onClick={login}
                                 >
                                     Login
                                 </Button>

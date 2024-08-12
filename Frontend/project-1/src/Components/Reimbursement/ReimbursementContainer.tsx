@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Table, Dropdown } from "react-bootstrap";
-import { useDarkMode } from "../../contexts/DarkmodeContext"; // Import the dark mode context
-import "../../App.css"; // Ensure this path is correct based on your project structure
+import { useDarkMode } from "../../contexts/DarkmodeContext";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import "../../App.css";
 
 export const ReimbursementContainer: React.FC = () => {
     const [reimbursements, setReimbursements] = useState<any[]>([]);
     const [statusFilter, setStatusFilter] = useState<string>("ALL");
-    const { isDarkMode } = useDarkMode(); // Get the dark mode state
+    const { isDarkMode } = useDarkMode();
 
     useEffect(() => {
         const fetchReimbursements = async () => {
@@ -18,7 +20,7 @@ export const ReimbursementContainer: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                alert("Failed to fetch reimbursements.");
+                toast.error("Failed to fetch reimbursements.");
             }
         };
 
@@ -33,8 +35,9 @@ export const ReimbursementContainer: React.FC = () => {
             setReimbursements(reimbursements.map(reimbursement =>
                 reimbursement.reimbId === reimbursementId ? { ...reimbursement, status: newStatus } : reimbursement
             ));
+            toast.success(`Reimbursement ${newStatus.toLowerCase()} successfully!`);
         } catch (error) {
-            console.error("Error updating reimbursement:", error);
+            toast.error("Error updating reimbursement.");
         }
     };
 
@@ -43,9 +46,9 @@ export const ReimbursementContainer: React.FC = () => {
             await axios.patch(`http://localhost:8080/reimbursements/${reimbursementId}/description`, { description: newDescription }, {
                 withCredentials: true
             });
-            // Handle the update in the frontend
+            toast.success("Description updated successfully!");
         } catch (error) {
-            console.error("Error updating reimbursement description:", error);
+            toast.error("Error updating reimbursement description.");
         }
     };
 
@@ -55,8 +58,9 @@ export const ReimbursementContainer: React.FC = () => {
                 withCredentials: true
             });
             setReimbursements(reimbursements.filter(reimbursement => reimbursement.reimbId !== reimbId));
+            toast.success("Reimbursement deleted successfully!");
         } catch (error) {
-            console.error("Error deleting reimbursement:", error);
+            toast.error("Error deleting reimbursement.");
         }
     };
 
@@ -79,8 +83,9 @@ export const ReimbursementContainer: React.FC = () => {
 
     return (
         <div className="reimbursement-container">
+            <ToastContainer />
             <div className="heading-section">
-                <h2>All Reimbursements</h2>
+                <h2>All Reimbursement Tickets</h2>
                 <Dropdown onSelect={(eventKey) => setStatusFilter(eventKey as string)} className="mb-3">
                     <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
                         Status Filter
