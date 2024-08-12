@@ -52,14 +52,14 @@ export const UserProfile: React.FC = () => {
     return (
         <div>
             <CustomNavbar />
-            <Container className="mt-4">
+            <Container className=" mt-4">
                 <Row className="justify-content-center">
                     <Col md={6}>
                         <div className="text-center mb-4">
                             <h1><strong>{user.firstName} {user.lastName}</strong></h1>
                             <Image src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000" img-fluid width={200} height={200} roundedCircle className="mb-3"/>
                         </div>
-                        <div className="mb-4">
+                        <div className="text-center mb-4">
                             <p><strong>User ID:</strong> {user.userId || "N/A"}</p>
                             <p><strong>Username:</strong> {user.username || "N/A"}</p>
                             <p><strong>Role:</strong> {user.role || "N/A"}</p>

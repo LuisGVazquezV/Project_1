@@ -32,7 +32,7 @@ export const EmployeeDashboard: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                toast.error("Error fetching reimbursements.");
+                console.log("Error fetching reimbursements:", error);
             }
         };
 

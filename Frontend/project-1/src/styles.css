@@ -54,3 +54,8 @@ input:checked + .slider:before {
     background-color: #181e2a;
     color: #3d97f3;
 }
+
+.light-mode {
+    background-color: #7ef3d3;
+    color: #071838;
+}

@@ -6,6 +6,8 @@ import { Button, Container, Form, Row, Col, Card, Image } from "react-bootstrap"
 import { useDarkMode } from "../../contexts/DarkmodeContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login: React.FC = () => {
     const [user, setUser] = useState({
@@ -37,19 +39,24 @@ export const Login: React.FC = () => {
             localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
 
             if (userData.role === "Employee") {
-                navigate("/employee-dashboard");
+                toast.success("Welcome " + userData.firstName +" "+ userData.lastName + " ! Login successful!");
+                setTimeout(() => navigate("/employee-dashboard"), 2000); // 2-second delay
             } else if (userData.role === "Manager") {
-                navigate("/manager-dashboard");
+                toast.success("Welcome " + userData.firstName +" "+ userData.lastName + " ! Login successful!");
+                setTimeout(() => navigate("/manager-dashboard"), 2000); // 2-second delay
             } else {
-                navigate("/");
+                toast.error("Please log in");
+                setTimeout(() => navigate("/"), 2000); // 2-second delay
             }
         } catch (error) {
             console.error("Login failed:", error);
-            alert("Login failed! Please try again.");
+            toast.error("Login failed! Please input correct username and password");
         }
     };
 
+
     return (
+        <div>
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
             <Card className={`p-4 ${isDarkMode ? 'card-dark-mode' : 'card-light-mode'}`} style={{ maxWidth: '400px', width: '100%' }}>
                 <Card.Body>
@@ -106,5 +113,7 @@ export const Login: React.FC = () => {
                 </Card.Body>
             </Card>
         </Container>
+            <ToastContainer />
+</div>
     );
 };

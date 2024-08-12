@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Table, Dropdown } from "react-bootstrap";
+import { Button, Table, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDarkMode } from "../../contexts/DarkmodeContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +20,7 @@ export const ReimbursementContainer: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                toast.error("Failed to fetch reimbursements.");
+                console.log("Error fetching reimbursements:", error);
             }
         };
 
@@ -35,7 +35,7 @@ export const ReimbursementContainer: React.FC = () => {
             setReimbursements(reimbursements.map(reimbursement =>
                 reimbursement.reimbId === reimbursementId ? { ...reimbursement, status: newStatus } : reimbursement
             ));
-            toast.success(`Ticket resolved. Reimbursement ${newStatus.toLowerCase()} successfully!`);
+            toast.success(`Ticket resolved. Reimbursement was ${newStatus.toLowerCase()}.`);
         } catch (error) {
             toast.error("Error updating reimbursement.");
         }
@@ -108,6 +108,7 @@ export const ReimbursementContainer: React.FC = () => {
                     <th>Status</th>
                     <th></th>
                     <th>Actions</th>
+                    <th>User ID</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -140,6 +141,23 @@ export const ReimbursementContainer: React.FC = () => {
                             >
                                 Delete
                             </Button>
+                        </td>
+                        <td>
+                            <OverlayTrigger
+                                placement="top"
+                                overlay={
+                                    <Tooltip id={`tooltip-user-${reimbursement.user.userId}`}>
+                                        <div>
+                                            <strong>User ID:</strong> {reimbursement.user.userId}<br />
+                                            <strong>First Name:</strong> {reimbursement.user.firstName}<br />
+                                            <strong>Last Name:</strong> {reimbursement.user.lastName}<br />
+                                            <strong>Username:</strong> {reimbursement.user.username}
+                                        </div>
+                                    </Tooltip>
+                                }
+                            >
+                                <span className="user-id">{reimbursement.user.userId}</span>
+                            </OverlayTrigger>
                         </td>
                     </tr>
                 ))}
