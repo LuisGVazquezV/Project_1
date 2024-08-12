@@ -32,7 +32,8 @@ export const EmployeeDashboard: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                console.log("Error fetching reimbursements:", error);
+                console.error("Error fetching reimbursements:", error);
+                //toast.error("Failed to load reimbursements. Please try again later.");
             }
         };
 
@@ -57,6 +58,16 @@ export const EmployeeDashboard: React.FC = () => {
     };
 
     const handleUpdateDescription = async (reimbId: number) => {
+        if (!editDescription.trim()) {
+            toast.error("Description cannot be empty.");
+            return;
+        }
+
+        if (/^\d+$/.test(editDescription.trim())) {
+            toast.error("Description cannot be just numbers.");
+            return;
+        }
+
         try {
             await axios.patch(
                 `http://localhost:8080/reimbursements/${reimbId}/description`,
@@ -67,15 +78,11 @@ export const EmployeeDashboard: React.FC = () => {
                 reimbursement.reimbId === reimbId ? { ...reimbursement, description: editDescription } : reimbursement
             ));
             toast.success("Description updated successfully!");
-            setEditReimbId(null); // Exit edit mode after saving
+            setEditReimbId(null);
         } catch (error) {
             toast.error("Error updating reimbursement description.");
         }
     };
-
-    if (!user) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div>
@@ -116,60 +123,68 @@ export const EmployeeDashboard: React.FC = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {reimbursements.map((reimbursement) => (
-                        <tr key={reimbursement.reimbId}>
-                            <td>{reimbursement.reimbId}</td>
-                            <td>
-                                {editReimbId === reimbursement.reimbId ? (
-                                    <input
-                                        type="text"
-                                        value={editDescription}
-                                        onChange={(e) => setEditDescription(e.target.value)}
-                                    />
-                                ) : (
-                                    reimbursement.description
-                                )}
-                            </td>
-                            <td>{formatCurrency(reimbursement.amount)}</td>
-                            <td>{reimbursement.status}</td>
-                            <td>
-                                <span
-                                    className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
-                                ></span>
-                            </td>
-                            <td style={{ textAlign: "left" }}>
-                                {editReimbId === reimbursement.reimbId ? (
-                                    <>
-                                        <Button
-                                            variant="success"
-                                            onClick={() => handleUpdateDescription(reimbursement.reimbId)}
-                                            className="me-2"
-                                        >
-                                            Save
-                                        </Button>
-                                        <Button
-                                            variant="secondary"
-                                            onClick={() => setEditReimbId(null)}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </>
-                                ) : (
-                                    reimbursement.status === "PENDING" && (
-                                        <Button
-                                            variant="outline-info"
-                                            onClick={() => {
-                                                setEditReimbId(reimbursement.reimbId);
-                                                setEditDescription(reimbursement.description);
-                                            }}
-                                        >
-                                            Update Description
-                                        </Button>
-                                    )
-                                )}
+                    {reimbursements.length === 0 ? (
+                        <tr>
+                            <td colSpan={6} className="text-center">
+                                 No Reimbursement Tickets Available With This Status. ({statusFilter})
                             </td>
                         </tr>
-                    ))}
+                    ) : (
+                        reimbursements.map((reimbursement) => (
+                            <tr key={reimbursement.reimbId}>
+                                <td>{reimbursement.reimbId}</td>
+                                <td>
+                                    {editReimbId === reimbursement.reimbId ? (
+                                        <input
+                                            type="text"
+                                            value={editDescription}
+                                            onChange={(e) => setEditDescription(e.target.value)}
+                                        />
+                                    ) : (
+                                        reimbursement.description
+                                    )}
+                                </td>
+                                <td>{formatCurrency(reimbursement.amount)}</td>
+                                <td>{reimbursement.status}</td>
+                                <td>
+                                        <span
+                                            className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
+                                        ></span>
+                                </td>
+                                <td style={{ textAlign: "left" }}>
+                                    {editReimbId === reimbursement.reimbId ? (
+                                        <>
+                                            <Button
+                                                variant="success"
+                                                onClick={() => handleUpdateDescription(reimbursement.reimbId)}
+                                                className="me-2"
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => setEditReimbId(null)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        reimbursement.status === "PENDING" && (
+                                            <Button
+                                                variant="outline-info"
+                                                onClick={() => {
+                                                    setEditReimbId(reimbursement.reimbId);
+                                                    setEditDescription(reimbursement.description);
+                                                }}
+                                            >
+                                                Update Description
+                                            </Button>
+                                        )
+                                    )}
+                                </td>
+                            </tr>
+                        ))
+                    )}
                     </tbody>
                 </Table>
             </div>

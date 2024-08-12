@@ -20,7 +20,8 @@ export const ReimbursementContainer: React.FC = () => {
                 const response = await axios.get(url, { withCredentials: true });
                 setReimbursements(response.data);
             } catch (error) {
-                console.log("Error fetching reimbursements:", error);
+                console.error("Error fetching reimbursements:", error);
+                toast.error("Error fetching reimbursements. Please try again later.");
             }
         };
 
@@ -112,55 +113,63 @@ export const ReimbursementContainer: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {reimbursements.map((reimbursement) => (
-                    <tr key={reimbursement.reimbId}>
-                        <td>{reimbursement.reimbId}</td>
-                        <td>{reimbursement.description}</td>
-                        <td>{formatCurrency(reimbursement.amount)}</td>
-                        <td>{reimbursement.status}</td>
-                        <td>
-                            <span
-                                className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
-                            ></span>
-                        </td>
-                        <td>
-                            {reimbursement.status === 'PENDING' && (
-                                <>
-                                    <Button variant="outline-success"
-                                            onClick={() => handleUpdate(reimbursement.reimbId, 'APPROVED')}
-                                            className="action-button">Approve</Button>
-                                    <Button variant="outline-danger"
-                                            onClick={() => handleUpdate(reimbursement.reimbId, 'DENIED')}
-                                            className="action-button">Deny</Button>
-                                </>
-                            )}
-                            <Button
-                                variant="outline-warning"
-                                onClick={() => handleDelete(reimbursement.reimbId)}
-                                className="action-button"
-                            >
-                                Delete
-                            </Button>
-                        </td>
-                        <td>
-                            <OverlayTrigger
-                                placement="top"
-                                overlay={
-                                    <Tooltip id={`tooltip-user-${reimbursement.user.userId}`}>
-                                        <div>
-                                            <strong>User ID:</strong> {reimbursement.user.userId}<br />
-                                            <strong>First Name:</strong> {reimbursement.user.firstName}<br />
-                                            <strong>Last Name:</strong> {reimbursement.user.lastName}<br />
-                                            <strong>Username:</strong> {reimbursement.user.username}
-                                        </div>
-                                    </Tooltip>
-                                }
-                            >
-                                <span className="user-id">{reimbursement.user.userId}</span>
-                            </OverlayTrigger>
+                {reimbursements.length === 0 ? (
+                    <tr>
+                        <td colSpan={7} className="text-center">
+                            No Reimbursement Tickets Available With This Status. ({statusFilter})
                         </td>
                     </tr>
-                ))}
+                ) : (
+                    reimbursements.map((reimbursement) => (
+                        <tr key={reimbursement.reimbId}>
+                            <td>{reimbursement.reimbId}</td>
+                            <td>{reimbursement.description}</td>
+                            <td>{formatCurrency(reimbursement.amount)}</td>
+                            <td>{reimbursement.status}</td>
+                            <td>
+                                    <span
+                                        className={`status-indicator ${getStatusIndicatorClass(reimbursement.status)}`}
+                                    ></span>
+                            </td>
+                            <td>
+                                {reimbursement.status === 'PENDING' && (
+                                    <>
+                                        <Button variant="outline-success"
+                                                onClick={() => handleUpdate(reimbursement.reimbId, 'APPROVED')}
+                                                className="action-button">Approve</Button>
+                                        <Button variant="outline-danger"
+                                                onClick={() => handleUpdate(reimbursement.reimbId, 'DENIED')}
+                                                className="action-button">Deny</Button>
+                                    </>
+                                )}
+                                <Button
+                                    variant="outline-warning"
+                                    onClick={() => handleDelete(reimbursement.reimbId)}
+                                    className="action-button"
+                                >
+                                    Delete
+                                </Button>
+                            </td>
+                            <td>
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id={`tooltip-user-${reimbursement.user.userId}`}>
+                                            <div>
+                                                <strong>User ID:</strong> {reimbursement.user.userId}<br />
+                                                <strong>First Name:</strong> {reimbursement.user.firstName}<br />
+                                                <strong>Last Name:</strong> {reimbursement.user.lastName}<br />
+                                                <strong>Username:</strong> {reimbursement.user.username}
+                                            </div>
+                                        </Tooltip>
+                                    }
+                                >
+                                    <span className="user-id">{reimbursement.user.userId}</span>
+                                </OverlayTrigger>
+                            </td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </Table>
         </div>

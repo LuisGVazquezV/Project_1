@@ -64,7 +64,7 @@ export const UsersContainer: React.FC = () => {
                 withCredentials: true
             });
             setUsers(users.filter(user => user.userId !== userId));
-            toast.success("User deleted successfully!");
+            toast.success("User deleted successfully! Reimbursement tickets associated with this user have been deleted as well.");
         } catch (error) {
             toast.error("Error deleting user.");
         }
@@ -76,7 +76,7 @@ export const UsersContainer: React.FC = () => {
             firstName: user.firstName,
             lastName: user.lastName,
             username: user.username,
-            password: ''
+            password: '' // Preserve existing password
         });
         setShowEditModal(true);
     };
@@ -86,7 +86,18 @@ export const UsersContainer: React.FC = () => {
         setFormValues(prev => ({ ...prev, [name]: value }));
     };
 
+    const validateForm = () => {
+        const { firstName, lastName, username } = formValues;
+        if (!firstName.trim() || !lastName.trim() || !username.trim()) {
+            toast.error("First Name, Last Name, and Username cannot be blank.");
+            return false;
+        }
+        return true;
+    };
+
     const handleUpdateUser = async () => {
+        if (!validateForm()) return; // Exit if form validation fails
+
         try {
             await axios.patch(`http://localhost:8080/users/update/${selectedUser.userId}`, formValues, {
                 withCredentials: true
@@ -168,7 +179,11 @@ export const UsersContainer: React.FC = () => {
                                 name="firstName"
                                 value={formValues.firstName || ''}
                                 onChange={handleFormChange}
+                                isInvalid={!formValues.firstName.trim() && showEditModal}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                First Name is required.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="formLastName" className="mt-3">
                             <Form.Label>Last Name:</Form.Label>
@@ -177,7 +192,11 @@ export const UsersContainer: React.FC = () => {
                                 name="lastName"
                                 value={formValues.lastName || ''}
                                 onChange={handleFormChange}
+                                isInvalid={!formValues.lastName.trim() && showEditModal}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                Last Name is required.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="formUsername" className="mt-3">
                             <Form.Label>Username:</Form.Label>
@@ -186,7 +205,11 @@ export const UsersContainer: React.FC = () => {
                                 name="username"
                                 value={formValues.username || ''}
                                 onChange={handleFormChange}
+                                isInvalid={!formValues.username.trim() && showEditModal}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                Username is required.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="formPassword" className="mt-3">
                             <Form.Label>Password:</Form.Label>

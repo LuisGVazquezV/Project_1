@@ -14,9 +14,6 @@ export const UserProfile: React.FC = () => {
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState("");
 
-    // Detecting the current theme
-    const darkMode = document.body.classList.contains("dark-mode");
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -33,22 +30,44 @@ export const UserProfile: React.FC = () => {
     }, [user.userId]);
 
     const handleUpdate = async () => {
+        if (!username.trim()) {
+            toast.error("Username cannot be left blank.");
+            return;
+        }
+
+        if (username === user.username) {
+            toast.error("New username cannot be the same as the current username.");
+            return;
+        }
+
+        if (password.trim().length === 0) {
+            toast.error("Password cannot be left empty.");
+            return;
+        }
+
         try {
+            // Check if the new username is already taken
+            const usernameCheckResponse = await axios.get(`http://localhost:8080/users/exists/${username}`, { withCredentials: true });
+            if (usernameCheckResponse.data.exists) {
+                toast.error("Username already exists. Please choose another username.");
+                return;
+            }
+
+            // Update user information
             await axios.patch(`http://localhost:8080/users/update/${user.userId}`, {
                 username: username,
                 password: password
             }, { withCredentials: true });
 
-            setUser(prevUser => ({
-                ...prevUser,
-                username: username,
-                password: password
-            }));
+            // Fetch updated user data
+            const updatedUserResponse = await axios.get(`http://localhost:8080/users/${user.userId}`, { withCredentials: true });
+            setUser(updatedUserResponse.data);
+
             setIsEditing(false);
             toast.success("User data updated successfully!");
         } catch (error) {
             console.error("Error updating user data:", error);
-            toast.error("Failed to update user data.");
+            toast.error("Username already exists. Please choose another username."); //will fix later
         }
     };
 
@@ -60,7 +79,14 @@ export const UserProfile: React.FC = () => {
                     <Col md={6} className="mb-4">
                         <div className="text-center mb-4">
                             <h1><strong>{user.firstName} {user.lastName}</strong></h1>
-                            <Image src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000" img-fluid width={200} height={200} roundedCircle className="mb-3"/>
+                            <Image
+                                src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000"
+                                img-fluid
+                                width={200}
+                                height={200}
+                                roundedCircle
+                                className="mb-3"
+                            />
                         </div>
                         <div className="text-center mb-4">
                             <p><strong>User ID:</strong> {user.userId || "N/A"}</p>
@@ -68,14 +94,13 @@ export const UserProfile: React.FC = () => {
                             <p><strong>Role:</strong> {user.role || "N/A"}</p>
                         </div>
                         {isEditing ? (
-                            <div className={`p-3 rounded shadow-sm ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
+                            <div className="p-3 rounded shadow-sm bg-dark-subtle">
                                 <Form.Group controlId="username" className="mb-3">
                                     <Form.Label>Username</Form.Label>
                                     <Form.Control
                                         type="text"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
-                                        className={darkMode ? "bg-secondary text-light" : ""}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="password" className="mb-3">
@@ -84,7 +109,6 @@ export const UserProfile: React.FC = () => {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className={darkMode ? "bg-secondary text-light" : ""}
                                     />
                                 </Form.Group>
                                 <Button onClick={handleUpdate} variant="primary" className="me-2">Save Changes</Button>
