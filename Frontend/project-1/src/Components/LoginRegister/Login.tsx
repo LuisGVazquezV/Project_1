@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { store } from "../../globalData/store";
 import { Button, Container, Form, Row, Col, Card, Image } from "react-bootstrap";
+import { useDarkMode } from "../../contexts/DarkmodeContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Login.css';
 
 export const Login: React.FC = () => {
     const [user, setUser] = useState({
@@ -12,6 +14,7 @@ export const Login: React.FC = () => {
     });
 
     const navigate = useNavigate();
+    const { isDarkMode } = useDarkMode(); // Get dark mode status
 
     const storeValues = (input: React.ChangeEvent<HTMLInputElement>) => {
         setUser((prev) => ({ ...prev, [input.target.name]: input.target.value }));
@@ -31,9 +34,7 @@ export const Login: React.FC = () => {
                 role: userData.role
             };
 
-
             localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
-
 
             if (userData.role === "Employee") {
                 navigate("/employee-dashboard");
@@ -50,14 +51,14 @@ export const Login: React.FC = () => {
 
     return (
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
-            <Card className="p-4" style={{maxWidth: '400px', width: '100%' }}>
+            <Card className={`p-4 ${isDarkMode ? 'card-dark-mode' : 'card-light-mode'}`} style={{ maxWidth: '400px', width: '100%' }}>
                 <Card.Body>
                     <Image
                         src="https://img.icons8.com/?size=100&id=46777&format=png&color=000000"
                         fluid
                     />
-                    <Card.Title className="text-center mb-4 text-primary fs-1">ERS</Card.Title>
-                    <Card.Subtitle className="text-center mb-4 text-primary fs-5">Employee Reimbursement System</Card.Subtitle>
+                    <Card.Title className="text-center mb-4 text-light fs-1">ERS</Card.Title>
+                    <Card.Subtitle className="text-center mb-4 text-light fs-5">Employee Reimbursement System</Card.Subtitle>
                     <Form onSubmit={(e) => { e.preventDefault(); login(); }}>
                         <Form.Group controlId="formUsername">
                             <Form.Label>Username</Form.Label>

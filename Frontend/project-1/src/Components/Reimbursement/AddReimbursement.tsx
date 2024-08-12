@@ -22,12 +22,12 @@ export const AddReimbursement: React.FC = () => {
                 withCredentials: true
             });
 
-            toast.success('Thank you for submitting. Await Manager review.');
+            toast.success('Thank you for submitting. Please wait  for a Manager to review your ticket.');
 
 
             setTimeout(() => {
                 navigate("/employee-dashboard");
-            }, 2500); // Delay for 2 seconds, adjust as needed
+            }, 3000);
         } catch (error) {
             console.error("Error creating reimbursement:", error);
             toast.error('Failed to submit reimbursement. Please try again.');
@@ -39,7 +39,7 @@ export const AddReimbursement: React.FC = () => {
             <CustomNavbar />
             <ToastContainer />
             <Container className="mt-4">
-                <h3 className="mb-4">Enter New Reimbursement Info:</h3>
+                <h3 className="mb-4">Submit New Reimbursement Ticket:</h3>
                 <Row className="justify-content-center">
                     <Col md={6}>
                         <form onSubmit={handleSubmit}>

@@ -35,7 +35,7 @@ export const ReimbursementContainer: React.FC = () => {
             setReimbursements(reimbursements.map(reimbursement =>
                 reimbursement.reimbId === reimbursementId ? { ...reimbursement, status: newStatus } : reimbursement
             ));
-            toast.success(`Reimbursement ${newStatus.toLowerCase()} successfully!`);
+            toast.success(`Ticket resolved. Reimbursement ${newStatus.toLowerCase()} successfully!`);
         } catch (error) {
             toast.error("Error updating reimbursement.");
         }

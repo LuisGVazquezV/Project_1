@@ -4,7 +4,7 @@ import { Button, Table, Form, Modal } from "react-bootstrap";
 import { useDarkMode } from "../../contexts/DarkmodeContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
+import './UsersContainer.css'; // Assuming you add custom CSS here
 
 interface FormValues {
     firstName: string;
@@ -151,15 +151,18 @@ export const UsersContainer: React.FC = () => {
                 </tbody>
             </Table>
 
-
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+            <Modal
+                show={showEditModal}
+                onHide={() => setShowEditModal(false)}
+                dialogClassName={isDarkMode ? 'modal-dark' : 'modal-light'}
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>Edit User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="formFirstName">
-                            <Form.Label>First Name</Form.Label>
+                            <Form.Label>First Name:</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="firstName"
@@ -168,7 +171,7 @@ export const UsersContainer: React.FC = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formLastName" className="mt-3">
-                            <Form.Label>Last Name</Form.Label>
+                            <Form.Label>Last Name:</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="lastName"
@@ -177,7 +180,7 @@ export const UsersContainer: React.FC = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formUsername" className="mt-3">
-                            <Form.Label>Username</Form.Label>
+                            <Form.Label>Username:</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="username"
@@ -186,7 +189,7 @@ export const UsersContainer: React.FC = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formPassword" className="mt-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
                                 name="password"

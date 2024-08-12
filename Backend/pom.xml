@@ -12,7 +12,7 @@
 	<artifactId>P1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>P1</name>
-	<description>Demo project for P1 - SpringMVC + SpringData</description>
+	<description>Project 1</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -56,14 +56,19 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.36</version> <!-- Or the version compatible with your project -->
-		</dependency>
-		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.4.12</version> <!-- Or the version compatible with your project -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 

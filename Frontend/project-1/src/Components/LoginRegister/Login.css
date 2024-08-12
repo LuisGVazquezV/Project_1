@@ -19,7 +19,7 @@
     margin-bottom: 25px;
     margin-left: auto;
     margin-right:auto;
-    background-color: #F4F7F5;
+    background-color: #30c5ab;
     height: 25%;
     width: 25%;
     border-radius: 25px;
@@ -60,4 +60,14 @@
 input{
     border-style: hidden;
     width: stretch;
+}
+
+.card-dark-mode {
+    background-color: #072144; /* Dark background for dark mode */
+    color: #ffffff; /* Light text for dark mode */
+}
+
+.card-light-mode {
+    background-color: #30c5ab; /* Light background for light mode */
+    color: #000000; /* Dark text for light mode */
 }

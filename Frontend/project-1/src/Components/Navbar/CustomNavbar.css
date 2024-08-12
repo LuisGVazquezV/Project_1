@@ -1,37 +1,37 @@
-.navbar-custom {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+/* CustomNavbar.css */
 
-.navbar-dark-mode {
-    background-color: #232c40;
-    color: #ffffff;
+.navbar-custom {
+    background-color: var(--navbar-background);
 }
 
 .navbar-light-mode {
-    background-color: #31af94;
-    color: #354260;
+    --navbar-background: #30c5ab; /* Light background for light mode */
 }
 
-.navbar-dark-mode .nav-link {
-    color: #ffffff;
+.navbar-dark-mode {
+    --navbar-background: #072144; /* Dark background for dark mode */
 }
 
+.navbar-light-mode .navbar-brand,
 .navbar-light-mode .nav-link {
-    color: #354260;
+    color: #333; /* Subtle text color for light mode */
 }
 
-.navbar-dark-mode .nav-link:hover {
-    text-shadow: 1px 1px 2px #55e1b6;
+.navbar-dark-mode .navbar-brand,
+.navbar-dark-mode .nav-link {
+    color: #3d97f3; /* Subtle text color for dark mode */
 }
 
-.navbar-light-mode .nav-link:hover {
-    text-shadow: 1px 1px 2px #32c9b4;
+.navbar-brand {
+    transition: color 0.3s ease;
 }
 
-.navbar-dark-mode .navbar-brand {
-    color: #ffffff;
+.nav-link {
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-.navbar-light-mode .navbar-brand {
-    color: #354260;
+/* Hover effect */
+.nav-link:hover {
+    color: inherit; /* Use the same color as the text color */
+    text-decoration: underline; /* Subtle underline on hover */
 }

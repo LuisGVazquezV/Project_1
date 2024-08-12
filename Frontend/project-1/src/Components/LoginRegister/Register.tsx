@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Register: React.FC = () => {
     const [user, setUser] = useState({
@@ -9,7 +11,7 @@ export const Register: React.FC = () => {
         lastName: "",
         username: "",
         password: "",
-        role: "Employee" // default role
+        role: "Employee"
     });
 
     const navigate = useNavigate();
@@ -22,29 +24,31 @@ export const Register: React.FC = () => {
     const register = async () => {
         const { username, password, firstName, lastName } = user;
         if (!username || !password || !firstName || !lastName) {
-            alert("Please fill out all fields");
+            toast.error("Please fill out all fields");
             return;
         }
 
         try {
             const response = await axios.post("http://localhost:8080/users/register", user);
             console.log(response.data);
-            alert(`${response.data.username} was created!`);
 
-            // Navigate based on the user's role
-            const { role } = response.data;
+            setTimeout(() => {
+                toast.success(`${response.data.username} was created! Go back to Log in!`);
+            });
+
+            /*const { role } = response.data;
             if (role === "Employee") {
                 navigate("/");
             } else if (role === "Manager") {
                 navigate("/");
             } else {
                 navigate("/");
-            }
+            }*/
         } catch (error: unknown) {
             if (error instanceof Error) {
-                alert("Register failed! Error message: " + error.message);
+                toast.error("Register failed! Error message: " + error.message);
             } else {
-                alert("Register failed! An unknown error occurred.");
+                toast.error("Register failed! An unknown error occurred.");
             }
         }
     };
@@ -94,6 +98,7 @@ export const Register: React.FC = () => {
                     <button className="btn btn-secondary" onClick={() => navigate("/")}>Back</button>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

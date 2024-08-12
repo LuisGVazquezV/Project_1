@@ -52,5 +52,5 @@ input:checked + .slider:before {
 
 .dark-mode {
     background-color: #181e2a;
-    color: #ffffff;
+    color: #3d97f3;
 }

@@ -11,11 +11,12 @@ const CustomNavbar: React.FC = () => {
     const user = store.loggedInUser;
     const { isDarkMode } = useDarkMode();
 
-    console.log("User data in Navbar:", user); // Debugging line
+    console.log("User data in Navbar:", user);
 
+    // Update localStorage
     localStorage.setItem('loggedInUser', JSON.stringify(store.loggedInUser));
 
-// Retrieve from localStorage
+    // Retrieve from localStorage
     const savedUser = localStorage.getItem('loggedInUser');
     if (savedUser) {
         store.loggedInUser = JSON.parse(savedUser);
@@ -63,24 +64,21 @@ const CustomNavbar: React.FC = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
+                    {/* Left-aligned items */}
                     {user.userId && (
-                        <>
-                            <Nav.Link as={Link} to="/user-profile">| User Profile |</Nav.Link>
-
-                        </>
+                        <Nav.Link as={Link} to="/user-profile" className={`text-${isDarkMode ? 'primary' : 'dark'}`}>
+                            | User Profile |
+                        </Nav.Link>
                     )}
                 </Nav>
                 <Nav className="ml-auto d-flex align-items-center">
+                    {/* Right-aligned items */}
                     {user.userId ? (
-                        <>
-                            <span className={`text-${isDarkMode ? 'light' : 'dark'} mr-3`}>
-                            </span>
-                            <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'light' : 'dark'}`}>
-                                | Logout |
-                            </Nav.Link>
-                        </>
+                        <Nav.Link onClick={handleLogout} className={`text-${isDarkMode ? 'primary' : 'dark'}`}>
+                            | Logout |
+                        </Nav.Link>
                     ) : (
-                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'light' : 'dark'}`}>
+                        <Nav.Link as={Link} to="/" className={`text-${isDarkMode ? 'primary' : 'dark'}`}>
                             | Login |
                         </Nav.Link>
                     )}
