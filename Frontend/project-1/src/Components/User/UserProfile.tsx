@@ -14,6 +14,9 @@ export const UserProfile: React.FC = () => {
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState("");
 
+    // Detecting the current theme
+    const darkMode = document.body.classList.contains("dark-mode");
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -52,9 +55,9 @@ export const UserProfile: React.FC = () => {
     return (
         <div>
             <CustomNavbar />
-            <Container className=" mt-4">
+            <Container className="mt-4">
                 <Row className="justify-content-center">
-                    <Col md={6}>
+                    <Col md={6} className="mb-4">
                         <div className="text-center mb-4">
                             <h1><strong>{user.firstName} {user.lastName}</strong></h1>
                             <Image src="https://img.icons8.com/?size=100&id=uLFwQfRJmJTu&format=png&color=000000" img-fluid width={200} height={200} roundedCircle className="mb-3"/>
@@ -65,13 +68,14 @@ export const UserProfile: React.FC = () => {
                             <p><strong>Role:</strong> {user.role || "N/A"}</p>
                         </div>
                         {isEditing ? (
-                            <div>
+                            <div className={`p-3 rounded shadow-sm ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
                                 <Form.Group controlId="username" className="mb-3">
                                     <Form.Label>Username</Form.Label>
                                     <Form.Control
                                         type="text"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
+                                        className={darkMode ? "bg-secondary text-light" : ""}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="password" className="mb-3">
@@ -80,6 +84,7 @@ export const UserProfile: React.FC = () => {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
+                                        className={darkMode ? "bg-secondary text-light" : ""}
                                     />
                                 </Form.Group>
                                 <Button onClick={handleUpdate} variant="primary" className="me-2">Save Changes</Button>
